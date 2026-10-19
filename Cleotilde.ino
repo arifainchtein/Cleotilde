@@ -23,7 +23,7 @@
 #include <ArduinoJson.h>
 #include <esp_system.h>
 
-#define FIRMWARE_VERSION "Cleotilde-0.3"
+#define FIRMWARE_VERSION "Cleotilde-0.4"
 #define DEVICE_TYPE_ID "Cleotilde"
 #define DEFAULT_SSID "MainRouter24"  // open network, no password
 #define DEFAULT_HOSTNAME "CleotildeESP32"  // the Pi is Cleotilde.local, so the ESP32 must not use that name
@@ -68,7 +68,9 @@ bool debug = false;
 
 // VerifyUserCode (doorbell). A ring takes 1-2 min to reach the board (Zhinu -> SFTP -> Pi), longer than one
 // 30 s TOTP step, so a code from any step in the last 3 min is accepted (one step ahead too, for clock skew).
-// Each step is accepted once. 5 wrong codes in an hour lock verification for an hour.
+// Each earlier step is accepted once. The current step can be used again: the Hypothalamus asks this board
+// for a code (GetCommandCode) for each of its own CommandRequests and verifies it a moment later, often
+// several in the same step. 5 wrong codes in an hour lock verification for an hour.
 #define TOTP_STEP_SEC 30
 #define VERIFY_STEPS_BACK 6  // 6 earlier steps + the current one = the last 3 minutes
 #define VERIFY_STEPS_AHEAD 1
@@ -590,10 +592,13 @@ bool verifyUserCode(long userCode) {
   if (codeLockedOut()) return false;
   long currentStep = (long)rtcUtcEpoch() / TOTP_STEP_SEC;
   for (long step = currentStep - VERIFY_STEPS_BACK; step <= currentStep + VERIFY_STEPS_AHEAD; step++) {
-    if (stepUsed(step)) continue;
+    bool current = step == currentStep;
+    if (!current && stepUsed(step)) continue;
     if (secretManager.generateCodeAt(step * TOTP_STEP_SEC) == userCode) {
-      usedSteps[usedStepPos] = step;
-      usedStepPos = (usedStepPos + 1) % VERIFY_USED_STEPS;
+      if (!current) {
+        usedSteps[usedStepPos] = step;
+        usedStepPos = (usedStepPos + 1) % VERIFY_USED_STEPS;
+      }
       lastAcceptedCode = userCode;
       lastAcceptedSec = nowSec;
       return true;

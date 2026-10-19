@@ -68,7 +68,7 @@ Switch **left**: the Pi's pages (up to 6, rotating every 5 s). Switch **right**:
 | `Start …` / `End …` (life cycle events) | `Ok-<event>` |
 | `GetTime`, `SetTime#d#m#yy#dow#hh#mm#ss`, `SetTimeFromInternet` | as Annabelle |
 | `GetCommandCode`, `GetSecret`, `SetSecret#base32#digits#period` | TOTP, as Annabelle |
-| `VerifyUserCode#123456` | `Ok-Valid Code` / `Failure-Invalid Code`. Doorbell: any 30 s step in the last 3 min (+1 ahead), each step once; 5 wrong in an hour = locked for an hour |
+| `VerifyUserCode#123456` | `Ok-Valid Code` / `Failure-Invalid Code`. Doorbell: any 30 s step in the last 3 min (+1 ahead), earlier steps once each, the current step reusable (the Hypothalamus verifies its own codes); 5 wrong in an hour = locked for an hour |
 | `ConfigWifiSTA#ssid#pass#host`, `ConfigWifiAP#ssid#pass#host`, `GetIpAddress`, `RestartWifi`, `ScanNetworks` | |
 | `GetSerialNumber`, `GetFirmware`, `ResetInfo`, `GetOperationMode`, `Reboot`, `Flush`, `debug#1` | |
 
