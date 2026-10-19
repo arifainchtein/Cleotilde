@@ -70,6 +70,7 @@ Switch **left**: the Pi's pages (up to 6, rotating every 5 s). Switch **right**:
 | `GetCommandCode`, `GetSecret`, `SetSecret#base32#digits#period` | TOTP, as Annabelle |
 | `VerifyUserCode#123456` | `Ok-Valid Code` / `Failure-Invalid Code`. Doorbell: any 30 s step in the last 3 min (+1 ahead), earlier steps once each, the current step reusable (the Hypothalamus verifies its own codes); 5 wrong in an hour = locked for an hour |
 | `ConfigWifiSTA#ssid#pass#host`, `ConfigWifiAP#ssid#pass#host`, `GetIpAddress`, `RestartWifi`, `ScanNetworks` | |
+| `SetProductDefinition#name#power#battery#pcbs#firmware`, `GetProductDefinition` | as Daffodil (PaulaDeployer updates the firmware label after a deploy) |
 | `GetSerialNumber`, `GetFirmware`, `ResetInfo`, `GetOperationMode`, `Reboot`, `Flush`, `debug#1` | |
 
 GetSensorData fields (append only, never reorder):

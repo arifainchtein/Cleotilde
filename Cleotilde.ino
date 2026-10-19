@@ -20,15 +20,18 @@
 #include <PCF8563TimeManager.h>
 #include <Esp32SecretManager.h>
 #include <WifiManager.h>
+#include <VitalSignsTracker.h>  // only for buildStamp()
 #include <ArduinoJson.h>
 #include <esp_system.h>
 
-#define FIRMWARE_VERSION "Cleotilde-0.4"
+#define FIRMWARE_VERSION "Cleotilde-0.5"
 #define DEVICE_TYPE_ID "Cleotilde"
 #define DEFAULT_SSID "MainRouter24"  // open network, no password
 #define DEFAULT_HOSTNAME "CleotildeESP32"  // the Pi is Cleotilde.local, so the ESP32 must not use that name
 
 bool debug = false;
+// YYMMDDhh of this build, so PaulaDeployer can tell whether the firmware label describes the running code.
+const uint32_t FIRMWARE_BUILD = VitalSignsTracker::buildStamp(__DATE__, __TIME__);
 
 // ---------------------------------------------------------------- pins (Wally 17 + Paula)
 #define SCREEN_WIDTH 128
@@ -669,6 +672,28 @@ void handleSerialCommand(String command) {
     if (!RELAY_HARDWARE_PRESENT) {
       Serial.println(F("Failure-NoRelayHardware"));
     }
+  } else if (command.startsWith("SetProductDefinition")) {
+    // SetProductDefinition#<name>#<powerSource>#<battery>#<pcbs>#<firmware>  (as Daffodil; PaulaDeployer
+    // reads it back with GetProductDefinition and resends it with the new firmware label after a deploy)
+    secretManager.saveProductDefinition(getValue(command, '#', 1), getValue(command, '#', 2), getValue(command, '#', 3),
+                                        getValue(command, '#', 4), getValue(command, '#', 5), FIRMWARE_BUILD);
+    Serial.println(F("Ok-SetProductDefinition"));
+  } else if (command.startsWith("GetProductDefinition")) {
+    // Same fields and order as Daffodil's answer, which PaulaDeployer and the factory's Inspect parse.
+    String pdName, pdPowerSource, pdBattery, pdPcbs, pdFirmware;
+    secretManager.getProductDefinition(pdName, pdPowerSource, pdBattery, pdPcbs, pdFirmware);
+    unsigned long now = timeManager.getCurrentTimeInSeconds(currentTimerRecord);
+    unsigned long commissionDate = secretManager.getCommissionDate();
+    if (commissionDate < 1704067200UL) {  // before 2024-01-01 = never set (or an RTC reset default)
+      commissionDate = now;
+      secretManager.setCommissionDate(commissionDate);
+    }
+    Serial.println("Ok-GetProductDefinition#" + pdName + "#" + pdPowerSource + "#" + pdBattery + "#" + pdPcbs + "#" + pdFirmware +
+                   "#" + String(commissionDate) + "#" + secretManager.getSSID() + "#" + secretManager.getWifiPassword() +
+                   "#" + secretManager.getSoftAPSSID() + "#" + secretManager.getSoftAPPASS() + "#" + secretManager.getHostName() +
+                   "#" + (secretManager.getStationMode() ? "Station" : "AccessPoint") + "#" + String(now) +
+                   "#" + secretManager.readDeviceName() + "#" + secretManager.readDeviceShortName() + "#" + serialNumber +
+                   "#" + String(secretManager.getProductDefinitionBuild()) + "#" + String(FIRMWARE_BUILD));
   } else if (command.startsWith("GetSerialNumber")) {
     Serial.println(serialNumber);
     Serial.println(F("Ok-GetSerialNumber"));
