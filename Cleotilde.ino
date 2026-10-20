@@ -24,7 +24,7 @@
 #include <ArduinoJson.h>
 #include <esp_system.h>
 
-#define FIRMWARE_VERSION "Cleotilde-0.5"
+#define FIRMWARE_VERSION "Cleotilde-8"
 #define DEVICE_TYPE_ID "Cleotilde"
 #define DEFAULT_SSID "MainRouter24"  // open network, no password
 #define DEFAULT_HOSTNAME "CleotildeESP32"  // the Pi is Cleotilde.local, so the ESP32 must not use that name
@@ -747,6 +747,11 @@ void handleSerialCommand(String command) {
     String codeInString = getValue(command, '#', 1);
     bool valid = codeInString.length() > 0 && verifyUserCode(codeInString.toInt());
     Serial.println(valid ? F("Ok-Valid Code") : F("Failure-Invalid Code"));
+  } else if (command.startsWith("ResetCodeLockout")) {
+    // the doorbell lock's release, sent by the Pi when Ari presses Release on Cleotilde's page (home network only):
+    // forgets the wrong codes, so a stranger's 5 wrong codes don't keep the doorbell shut for an hour
+    for (int i = 0; i < VERIFY_MAX_FAILURES; i++) failureSec[i] = 0;
+    Serial.println(F("Ok-ResetCodeLockout"));
   } else if (command.startsWith("GetSecret")) {
     Serial.println(secretManager.readSecret());
     Serial.println(F("Ok-GetSecret"));

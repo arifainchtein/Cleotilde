@@ -1,0 +1,595 @@
+
+--- USER ---
+
+
+<pasted_content id="2930">
+
+You are continuing work on Cleotilde, my network security Teleonome, which watches my LAN through an OpenWrt One router. Working directory: /home/ari/Data/OpenWrtOne. Read README.md and documents/06-cleotilde-overview.html first; also see cleotilde/ and code/.
+
+Context:
+- Router: OpenWrt One "MainRouter", 192.168.1.1, OpenWrt 25.12.5. Its USB-C console is plugged into the Pi (/dev/serial/by-id/usb-OpenWrt_OpenWrt_One..., a root shell). No software uses it yet.
+- Cleotilde: a Pi 3B at 192.168.1.179 on eth0, next to the router (Wi-Fi backup .180). Reach it with ssh -i ~/.ssh/chilhuacle pi@192.168.1.179. It runs Hypothalamus, Medula, Hippocampus and Tomcat (teleonomewebapp). Cerebellum is not running there yet.
+- Board: ESP32 (Wally 17 + Paula shield, 5 LEDs, OLED, INA219) on CP2104 USB serial; the denome's "Board Serial Port" is the /dev/serial/by-id path.
+- Code: framework at /home/ari/Data/Teleonome/framework, package microcontroller/cleotildemicrocontroller (CleotildeMicroController, CleotildeReader, CleotildeWriter, OpenWrtUbusClient) plus microcontroller/TtySerialPort. Web app at /home/ari/Data/Teleonome/teleonomewebapp (templates/NetworkSensorDeviceStatusReport.js, GeneralFunctions.js, index.html).
+- Data: the Pi reads the router over ubus JSON-RPC as the read-only user "cleotilde". History is in the Postgres daily tables networkdeviceactivity_YYYY_M_D; the whitelist is in networkdevicewhitelist.
+
+Rules:
+- Never build, commit or push in any Teleonome repo; I do all of that. You may edit code and verify it with standalone javac into the scratchpad.
+- Never invent a new mechanism. Analysis and alerts belong in the Cerebellum (Emergency Channel, Purpose:Cerebellum, Purpose Pathology).
+- Router: check first, then change in a separate step. Never touch devices that aren't Cleotilde's ("express" is my Air Express).
+- Never print secrets. The ubus password is in ~/Teleonome/CleotildeRouter.secret on the Pi.
+
+Done and verified on 2026-10-18 (all deployed; Hypothalamus restarted 13:01 and healthy):
+- Serial link: replaced jSerialComm with the pure-Java TtySerialPort. jSerialComm leaked native memory and the Pi hung twice from out-of-memory. A memwatch.sh cron job on the Pi kills the Hypothalamus above 300 MB, and the Home panel has a memory chart (copied from Ra).
+- MappedBusThread busy loop fixed: it now sleeps 1 s when it polled nothing.
+- Device list: built from the router (host hints, DHCP leases, Wi-Fi association lists, ARP table) plus an ARP sweep from the Pi (arp-scan on eth0, 192.168.1.0/24; those devices get Connection "sweep only"). Each device has Vendor (IEEE OUI file), Connection, Private MAC, First Seen and Last Seen. The whitelist matches by name or MAC.
+- Web app device page: a card deck, known devices first. It has Add / Add selected / Remove and IP links. "Not seen now" lists the last 30 days from the history, with the last-seen time and a Forget button that deletes the history.
+- Coloured panels now say why (e.g. "Packet Loss 33 above 20"). The internet check is now 10 pings; with 3, one lost ping read as 33% and tripped the alarm.
+- First run: 30 present, 20 unknown, 4 not seen. The sweep found .251 and .254 (the shed link radios), KitchenPanel .188 and MainRouter, none of which the router reports.
+
+Next steps:
+1. Security alerts are being built in a separate Cerebellum chat, from the prompt in /home/ari/Data/OpenWrtOne/cleotilde/cerebellum-security-alerts-prompt.md. Events: hidden unknown device, known MAC seen oddly, any new unknown device. An alert stays until I acknowledge it; it raises an Emergency Channel banner and a Purpose Pathology; no phone yet. Note: .254 is known AND sweep only by nature, so the task must learn each device's normal pattern first.
+2. Check that Cleotilde's memory chart stays flat for about a day. Then migrate Annabelle/ChinampaMonitor to TtySerialPort (same ESP32 board, same leak).
+3. Whitelist cleanup in the web app: 20 unknown devices.
+4. Shed link: name the router leases for .181 (TP-Link EAP, wrongly named "Ra"), .251 (Pharos CPE; I forgot its password and have 4 attempts left, so don't try) and .254 (WA7510N). Ask me for the names first.
+5. Rename Connection "wired" to "lan" (clients of the EAP land there).
+6. Later: traffic watch (design doc section 7c, needs my decisions), router console support in the software, a critical-device list for LED 4, and a decision on ttylogin for the router console.
+7. Security: revoke the GitHub token that is in a folder name in ~/Data/Teleonome (starts with "Zhinu_git_token") and in the remote URL in the Pi's buildorgan.sh.
+</pasted_content id="2930">
+
+.  the one issue i want to start with is Cleotilde hypothalamus keeps crashing
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Found it: both kills show the **JIT compiler** (C2) arena at ~597 MB — not the heap, not the serial port. Let me see which method it was compiling.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both kills happened ~3 hours after start (10,638 s and 10,682 s), with the C2 compiler on `DenomeManager::initializePulse` (3,962 bytes). Now, why Medula didn't restart it for 8 hours:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both bugs are clear now. Let me check the remaining launch sites, then verify the JVM flag on the Pi.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Results are only logged, so redirecting the launch output is safe. Editing the five launch sites in Medula:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The Pi change was blocked, so I'll apply only the local comment fix and hand over the Pi steps.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The Hypothalamus has been down since **23:43 last night** (8 hours now). Two separate bugs caused this.
+
+## 1. Why it dies: the JIT compiler, not a leak
+
+memwatch killed it twice yesterday, at 15:59 and 23:43. Its diagnostics show the same thing both times:
+
+- **Native memory:** Compiler arena = **597 MB**. The Java heap was only about 14 MB, and threads and file descriptors were flat.
+- **Compiler thread:** both times the C2 JIT compiler was busy on `com.teleonome.framework.denome.DenomeManager::initializePulse`, a 3,962-byte method with exception handlers.
+- **Timing:** both kills came about 3 hours after start (10,638 s and 10,682 s), which is when that method gets hot enough for C2 to compile it.
+- **What it looks like:** RSS sat at 172 MB, then went to 589 MB within one minute while free memory dropped to 26 MB. This is a known way the C2 compiler can blow up on large methods in older JDKs; the Pi runs OpenJDK 11.0.15 on armv7.
+
+So the earlier out-of-memory hangs that were blamed on jSerialComm may have been partly this. Replacing jSerialComm didn't fix it, and memwatch is what kept the Pi from freezing.
+
+**Fix:** stop the JIT from compiling that one method. It runs once per pulse, so running it uncompiled costs nothing noticeable. I checked that this JVM accepts the flag:
+```
+-XX:CompileCommand=exclude,com/teleonome/framework/denome/DenomeManager.initializePulse
+```
+If another big method blows up later, the broader fallback is `-XX:TieredStopAtLevel=1`, which turns off the C2 compiler entirely.
+
+## 2. Why nothing restarted it: Medula has been hung for 21 hours
+
+At 10:55 yesterday Medula restarted the Hippocampus and never came back. It is stuck in `Utils.executeCommand` → `readLine()` (Medula.java:483). All the `Start*BG.sh` scripts end with `java … &` without redirecting output. The backgrounded java keeps the output pipe open, so Medula waits forever. Every cron run since then has logged "Another Medula instance is already running" and exited. A restart of the Hypothalamus, Heart, Cerebellum or webapp would hang it the same way.
+
+**Code fix (done, not built):** in `medula/src/main/java/com/teleonome/medula/Medula.java` I added `> /dev/null 2>&1` to all five BG launches (Heart line 371, Hippocampus 487, Cerebellum 552, Hypothalamus 772, webserver 935), with a comment at 483. The commands' output was only ever logged, so nothing else depends on it. It's a string-only change; I haven't compiled it. The original is at `/tmp/claude-1000/-home-ari-Data-DigitalStables-Projects-Cleotilde/88767a5a-565f-4939-a467-a0c0dd9c0041/scratchpad/Medula.java.orig`. Ready for you to build and deploy.
+
+## Still to do on the Pi (blocked)
+
+The permission system blocked my write to the Pi, so nothing there has changed. Until the new Medula is deployed, the running one needs the same redirect in the scripts themselves. The steps are:
+
+1. Back up `StartHypothalamusBG.sh`, `StartHippocampusBG.sh`, `StartCerebellumBG.sh`, `StartWebserverBG.sh` and `heart/StartHeartBG.sh`.
+2. In each script, change the trailing `… .jar &` (or `catalina.sh run &`) to `… > /dev/null 2>&1 &`.
+3. Add the `CompileCommand=exclude` flag to the java line in `StartHypothalamusBG.sh`.
+4. Kill the hung Medula (pids 1255/1260). Within 5 minutes cron starts a fresh one, which should find the Hypothalamus dead and restart it.
+
+Do you want me to do these steps? If so, approve the ssh write, or add a permission rule for ssh to the Pi. Otherwise you can run them yourself.
+
+--- USER ---
+i dont understnad what do yo mean when the method gets hot enough for c2 to compile. C2 as a capacitor? why are you talking about compiling a method when is already iside of jar. should we update to jdk 17?
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Sorry, I used JVM jargon without explaining it. C2 isn't a capacitor here. It's the name of a part inside the Java virtual machine.
+
+**Why something still gets compiled when the code is already in a jar**
+
+The jar doesn't hold machine code. It holds **bytecode**, a portable format that the Pi's ARM CPU can't run directly. The JVM handles that in two ways:
+
+1. **Interpreting:** at startup it reads the bytecode one instruction at a time and carries each one out. That works but is slow.
+2. **Just-in-time (JIT) compiling:** the JVM counts how often each method runs. Once a method has run many times (that's what I meant by "hot"), it translates that method into native ARM machine code in memory so later calls are fast. This happens while the program runs, and it's never saved anywhere.
+
+There are two of these translators:
+- **C1:** fast and simple, decent code.
+- **C2:** slow and thorough, best code. It's only used for the hottest methods, and it can use a lot of temporary memory while it works.
+
+**What happened on Cleotilde**
+
+`DenomeManager.initializePulse` runs once per pulse. After about 3 hours (roughly 120–180 pulses) the JVM decided it was hot and gave it to C2. That method is very large, and C2's temporary memory grew to about 600 MB on a Pi with 923 MB. memwatch saw that and killed the process. It was the same method at about the same uptime both times, so it's deterministic and will happen every ~3 hours.
+
+The flag I suggested tells the JVM never to compile that one method and just keep interpreting it. Running it interpreted once per pulse costs maybe a few milliseconds, which you wouldn't notice. The rest of the program is still compiled normally.
+
+**Should you move to JDK 17?**
+
+It's available for the Pi (17.0.15 is in its package repository). It would probably help, because JDK 17 has several years of C2 fixes that 11.0.15 (from 2022) lacks. But I wouldn't do it as the fix for this:
+- **No guarantee:** I can't promise 17 fixes this exact case. The flag fixes it for certain, today, as a one-line change to the start script.
+- **It's a bigger change:** it would affect the Hypothalamus, Heart, Medula, Hippocampus and Tomcat at once. JDK 17 also blocks some internal-API access that old libraries rely on (MQTT, Tomcat version, Pi4J, etc.), and that could break things in ways that take time to track down.
+
+My recommendation is to use the flag now, so Cleotilde stays up and you can do the one-day memory-flatness check. Later, try JDK 17 on its own, ideally on one Pi first. If it runs cleanly for a few days, roll it out and drop the flag.
+
+The other half of the problem still stands: Medula is hung, so nothing restarts the Hypothalamus. The fix for that is in `Medula.java` and the Pi start scripts, as described in my last message.
+
+--- USER ---
+i dont understand the change you want me t o mak to the BG fils, show me how the StartHypothalamusBG.sh should be like. akso whdo does  > /dev/null 2>&1 & do?
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+This is `StartHypothalamusBG.sh` on the Pi now:
+
+```sh
+#rm /dev/ttyUSB0
+#ln -s /dev/ttyACM0 /dev/ttyUSB0
+sudo env MALLOC_ARENA_MAX=1 java   -Djava.ext.dirs -Djava.library.path=/usr/lib/jni  -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError   -Xloggc:/home/pi/Teleonome/logs/gc.log  -Xms20m  -Xmx100m -XX:MaxMetaspaceSize=96m -XX:MaxDirectMemorySize=32m -Xss256k -XX:+ExitOnOutOfMemoryError  -jar TeleonomeHypothalamus.jar &
+```
+
+This is what it should be (the last line is split with `\` so you can see the two additions):
+
+```sh
+#rm /dev/ttyUSB0
+#ln -s /dev/ttyACM0 /dev/ttyUSB0
+sudo env MALLOC_ARENA_MAX=1 java   -Djava.ext.dirs -Djava.library.path=/usr/lib/jni  -XX:NativeMemoryTracking=summary -XX:+HeapDumpOnOutOfMemoryError   -Xloggc:/home/pi/Teleonome/logs/gc.log  -Xms20m  -Xmx100m -XX:MaxMetaspaceSize=96m -XX:MaxDirectMemorySize=32m -Xss256k -XX:+ExitOnOutOfMemoryError \
+  -XX:CompileCommand=exclude,com/teleonome/framework/denome/DenomeManager.initializePulse \
+  -jar TeleonomeHypothalamus.jar > /dev/null 2>&1 &
+```
+
+There are two changes:
+1. **`-XX:CompileCommand=exclude,…initializePulse`:** tells the JVM never to compile that one method. This stops the crash every ~3 hours.
+2. **`> /dev/null 2>&1` before the final `&`:** this stops Medula hanging.
+
+Keep `-XX:NativeMemoryTracking=summary`. memwatch.sh finds the Hypothalamus by that flag.
+
+**What `> /dev/null 2>&1 &` does**
+
+Every program has two output channels: **stdout** (channel 1, normal output such as `System.out.println`) and **stderr** (channel 2, error output). Read the redirect left to right:
+
+| Part | Meaning |
+|---|---|
+| `> /dev/null` | Send stdout to `/dev/null`, a special file that throws away everything written to it |
+| `2>&1` | Send stderr (2) to the same place as stdout (1), so it's thrown away too |
+| `&` | Run the command in the background, so the script ends straight away and java keeps running |
+
+**Why this matters for Medula**
+
+Medula runs the script with `Utils.executeCommand`. That connects the script's stdout to a pipe and reads it until the pipe closes ("end of file"), then returns.
+
+- **Without the redirect:** java starts in the background, but it inherits the script's stdout, so it holds Medula's pipe open. The script finishes, but the pipe never closes, because java is still holding it and runs for days. Medula sits in `readLine()` forever. That's where it has been stuck since 10:55 yesterday.
+- **With the redirect:** java's output goes to `/dev/null` instead of the pipe. When the script finishes, nothing holds the pipe, so Medula gets end-of-file, returns, and carries on with its checks.
+
+**Is anything lost?**
+
+Almost nothing. The Hypothalamus writes its real logs through log4j to `~/Teleonome/logs/TeleonomeHypothalamus.txt`, and that isn't affected. The only things that go to stdout/stderr are stray `printStackTrace()` calls and JVM fatal-error messages. If you'd rather keep those, send them to a file instead of throwing them away:
+
+```sh
+  -jar TeleonomeHypothalamus.jar > /home/pi/Teleonome/logs/HypothalamusConsole.txt 2>&1 &
+```
+
+That fixes the hang just as well and keeps any crash messages. I'd use this version for the Hypothalamus.
+
+The other four BG scripts (Hippocampus, Cerebellum, Heart, Webserver) need only the second change: the redirect before their final `&`.
+
+--- USER ---
+why cant you change them yourself? you have the key
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The ssh key isn't what stopped me. Claude Code's auto-mode safety check blocked the command because it writes files on another machine ("Remote Shell Writes"), and that needs your OK. You're asking me to do it, so I'll try again.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+It went through this time. The original scripts are backed up in `~/script-backup-2026-10-19/` on the Pi. Here's what changed:
+
+- **`StartHypothalamusBG.sh`:** added the compile-exclude flag, and console output now goes to `~/Teleonome/logs/HypothalamusConsole.txt`.
+- **Hippocampus, Cerebellum, Heart and Webserver BG scripts:** added `> /dev/null 2>&1` before the final `&`.
+
+The Hypothalamus is still down, though, because the old Medula (pids 1255/1260) is still hung. The next step is to kill it. Within 5 minutes cron starts a new Medula, which should see the Hypothalamus is dead and restart it with the new script. I'd then watch memwatch.log and check that it gets past the 3-hour mark without the jump.
+
+Shall I kill the hung Medula now?
+
+--- USER ---
+yes
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The old Medula is gone. Cron fires at 08:00, so I'll wait for the Hypothalamus to come back.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+It's started, and its console log shows the JVM accepted the exclude flag. I'll wait for the first pulse.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm waiting for the first pulse and will report when it lands.
+
+--- USER ---
+<task-notification>
+<task-id>b5tb58tuj</task-id>
+<tool-use-id>toolu_01VNUCzRtT8XEWUS3bEJTFRD</tool-use-id>
+<output-file>/tmp/claude-1000/-home-ari-Data-DigitalStables-Projects-Cleotilde/88767a5a-565f-4939-a467-a0c0dd9c0041/tasks/b5tb58tuj.output</output-file>
+<status>completed</status>
+<summary>Background command "Wait for the first pulse after restart" completed (exit code 0)</summary>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Cleotilde is running again. The new Medula restarted the Hypothalamus at 08:00:20, and the first pulse came at 08:11. Memory is normal: 80 MB RSS, 30 threads, 450 MB free on the Pi. The JVM printed the exclude line at startup, so the fix for the compiler blow-up is active. Medula ran to the end and exited normally, so the new start scripts no longer hang it.
+
+**One thing you may not expect:** the new Medula also restarted the **Cerebellum** (pid 19424, started 08:00:14). Its pid file shows it had been dead since about 10:45 yesterday, and you told me it isn't meant to run on Cleotilde yet. Medula starts it because `Cerebellum.jar` is on the Pi. If you don't want it running yet, remove or rename that jar and Medula will skip it.
+
+**What to check:** the old crashes came about 3 hours after start, so the test is whether memwatch.log stays flat past **11:00–11:30 today**. If it does, the compiler fix is confirmed. Just ask me to check memwatch.log after 11:30 and I'll look.
+
+**Ready for you to build and deploy:** the change in `medula/src/main/java/com/teleonome/medula/Medula.java` (the output redirect on the five restart launches). The scripts on the Pi already prevent the hang, so this is a second layer of protection, not urgent.
+
+--- USER ---
+<task-notification>
+<task-id>bcxmsq1so</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-8876"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No change: Cleotilde is running, and the next check is memwatch.log after 11:30.
+
+--- USER ---
+stop the chat , preserve tokens i am at 84% need to last until tomorrow,  i will just check on you here
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've stopped the chat watch and won't turn it back on. Nothing else is running in the background. When you check back here, ask me to look at memwatch.log after 11:30 to confirm the 3-hour mark passed.
+
+--- USER ---
+how is cleaotilde
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Cleotilde is healthy. It's 10:02 and the Hypothalamus has been up for 2 hours since the 08:00 restart, pulsing normally (the last pulse was at 10:02). There have been no kills or restarts since.
+
+| Time | Hypothalamus RSS | Free memory on the Pi |
+|---|---|---|
+| 08:11 | 80 MB | 450 MB |
+| 09:11 | 98 MB | 427 MB |
+| 10:02 | 111 MB | 413 MB |
+
+Medula is running normally from cron again (it starts, checks and exits). The Hippocampus and Cerebellum are both running.
+
+RSS is creeping up slowly, which is normal while the JVM compiles the rest of the code. Yesterday's run had reached 170 MB by this point and then jumped to 589 MB. The real test is still the 3-hour mark, about **11:00–11:30**; if it gets past that without a jump, the compiler fix is confirmed.
+
+--- USER ---
+its noon now, we have restarted cleotile a couple of times doing othjer work
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The restarts didn't spoil the test. The 08:00 run made it past the crash point before you restarted it.
+
+- **The 08:00 run:** its crash point was about **10:58** (08:00:20 plus the ~10,650 s both crashed runs lasted). memwatch shows it flat at **113 MB** every minute from 10:50 to 11:06, with about 410 MB free on the Pi. Yesterday's runs jumped to ~590 MB at that point. It was replaced at about 11:07 by your restarts, not by a kill.
+- **No kills today:** memwatch has killed nothing since 23:43 last night. Its only two kills are yesterday's.
+- **Now:** the current Hypothalamus started at 11:25 (via Medula), is at 100 MB and pulsing (last pulse 12:05), and its command line includes the exclude flag. So however you restarted it, it went through the patched script.
+
+So the compiler fix looks good. One run is fairly strong evidence because yesterday's crash was so regular, but the overnight memory-flatness check from your step 2 will settle it.
+
+One thing to watch: if you start the Hypothalamus by hand with `StartHypothalamus.sh` (not the BG one), that script doesn't have the flag. Medula always uses the BG script, so it's only a problem for manual starts.
+
+--- USER ---
+ok, explain to me agin what was the problem and the fix
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+There were two problems: one crashed the Hypothalamus, and the other stopped anything from restarting it.
+
+## Problem 1: the Hypothalamus blew up about every 3 hours
+
+**What happened:** the Java virtual machine (JVM) doesn't run the jar's code directly. It starts by interpreting it, then translates the most-used methods into fast ARM machine code while running. The heavy-duty translator is called C2. After about 3 hours, `DenomeManager.initializePulse` had run enough pulses for C2 to start translating it. That method is very large, and on this older Java (11.0.15 on the Pi's 32-bit ARM) C2 used about **600 MB** just to translate it. memwatch saw the Hypothalamus pass 300 MB and killed it, which happened at 15:59 and 23:43 yesterday.
+
+**The fix:** one flag in `StartHypothalamusBG.sh` tells the JVM never to translate that one method:
+```
+-XX:CompileCommand=exclude,com/teleonome/framework/denome/DenomeManager.initializePulse
+```
+The method still runs, just interpreted, which costs a few milliseconds per pulse. Everything else is still translated normally.
+
+**Result:** today's 08:00 run went through the danger point (~10:58) flat at 113 MB.
+
+## Problem 2: Medula hung, so nobody restarted it
+
+**What happened:** at 10:55 yesterday Medula restarted the Hippocampus by running `StartHippocampusBG.sh`, then waited to read that script's output until it ended. The script launches java in the background (`… &`), and the background java inherited the script's output channel and kept it open. So the output never ended, and Medula waited forever. Every cron run after that saw the old Medula "still running" and quit. When the Hypothalamus died at 23:43, nothing restarted it, and Cleotilde was down for 8 hours.
+
+**The fix:** in each BG script, send java's output somewhere other than Medula's channel:
+```
+… -jar X.jar > /dev/null 2>&1 &
+```
+- `> /dev/null` throws away normal output.
+- `2>&1` sends error output to the same place.
+- `&` runs java in the background.
+
+Medula now sees the script's output end straight away and carries on. The Hypothalamus's output goes to `~/Teleonome/logs/HypothalamusConsole.txt` instead of `/dev/null`, so any crash messages are kept.
+
+## What has changed and where
+
+- **On the Pi, live now:** the five BG scripts (Hypothalamus, Hippocampus, Cerebellum, Heart, Webserver) are patched. The originals are in `~/script-backup-2026-10-19/`.
+- **In the Medula code, waiting for you to build:** `Medula.java` adds the same redirect to the five commands it uses to launch those scripts, as a second layer of protection.
+- **The restart itself:** I killed the hung Medula, cron started a fresh one at 08:00, and it restarted the Hypothalamus with the new script.
+
+## Possibly related
+
+Some of the earlier out-of-memory hangs that were blamed on jSerialComm may have been this compiler problem instead.
+
+--- USER ---
+you have to communicate this to the morning round, because this problem must be the same in all the teleonomes,and is not a code thing  its a sh file thing, need to update Ra, Sento, Tlaloc, ChinampaMOnitor
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm finding where the Morning Round reads its standing instructions, so I can add the check for all hosts there.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The HTML is regenerated from the plain file on each round, so I'll edit the plain `MorningRound` doc.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now I'll update the Morning Round's memory notes so they don't contradict this.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The Morning Round now has this as a standing check for every host, and its next run will fix Ra, Sento, Tlaloc and ChinampaMonitor. I haven't touched any of those hosts myself.
+
+**New check:** I added a "Start scripts" item under "What it checks" in the Morning Round's instructions (`medula/DoctorArea/config/commands/MorningRound`). It covers both problems:
+- **The output redirect:** every `… &` line in the `Start*BG.sh` scripts and `heart/StartHeartBG.sh` must end with `> … 2>&1 &`, so Medula can't hang on it again. The doc includes the grep that finds offending lines.
+- **The compiler flag:** `StartHypothalamusBG.sh` must carry the `CompileCommand=exclude` flag. If a Hypothalamus memory spike shows up, the round should first look at the JVM's native-memory report for the compiler.
+- **How to fix:** back up first, edit only the offending lines, and don't restart healthy processes just for this. If a host's Medula is already hung, patch the scripts and then kill that Medula.
+- **Your approval:** it records that you asked for this today on all four hosts, Sento included even though Sento is Manual.
+
+It stays as a check after the rollout, so a new or edited script can't bring the problem back.
+
+**Old notes corrected:** the round's memory notes said in August that Ra and Tlaloc didn't need the redirect fix. That was wrong: a bare `java … &` hangs Medula just the same. I fixed that note, marked the compiler problem as fixed on Cleotilde, and recorded Cleotilde as patched.
+
+**Sento:** going by the round's notes, its Medula has been hung since 17 Oct, and the Hypothalamus there has been without a pulse for 53+ hours. Waiting for tomorrow's round means another day down. Do you want me to patch Sento's scripts and kill its hung Medula now?
