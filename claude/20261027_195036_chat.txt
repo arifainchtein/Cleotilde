@@ -1,0 +1,723 @@
+
+--- USER ---
+
+
+<pasted_content id="2959">
+Resume prompt — Cleotilde remote access (WireGuard) + Paula field streaming — 2026-10-25
+
+Context:
+You are continuing work on Cleotilde remote access and Paula field streaming. Working dir /home/ari/Data/DigitalStables/Projects/Cleotilde. Read first: /home/ari/Data/OpenWrtOne/documents/07-network-rules-design.md (sections 2, 7 "Built 2026-10-25", 10 recipe), then your memory files (router-ssh-key, cleotilde-board-flashing, zhinu-chilhuacle-runtime).
+Hosts: OpenWrt One router = ssh -o IdentitiesOnly=yes -i ~/.ssh/chilhuacle root@192.168.1.1 · chilhuacle.info (Zhinu, GCP project another-gepetto, VM rutasegura, tag zhinu) = ssh -i ~/.ssh/dg_rutasegura arifainchtein@chilhuacle.info · Paula3 = pi@192.168.1.170 with ~/.ssh/chilhuacle (paula3.local does not resolve on .125, use the IP) · factory2 = ssh factory2 (ari@192.168.1.138, Ubuntu 26.04).
+PaulaDeployer source: ~/Data/DigitalStables/PaulaDeployer. Orchestrator source: ~/Data/DigitalStables/FactorySystem/Orchestrator (chat package: ChatDaemon, ChatSendCli; broker tcp://192.168.1.138:1883).
+
+Rules:
+Never build, commit or push Teleonome repos. Ari also builds and deploys PaulaDeployer and Orchestrator himself. A router network restart cuts the whole house off (5 GHz on DFS channel 144 takes about 80 s to return): ask first. Don't probe SSH keys (the auto-mode classifier blocks it). No secrets in docs: WireGuard private keys stay on their machines.
+
+Done 2026-10-25:
+Option 2 chosen: full Continuity access from outside through WireGuard. Ari's iPhone reaches http://192.168.1.138/continuity on 4G (tested, works).
+chilhuacle: static wireguard-go + wg (Debian 9, kernel 4.9: no kernel WireGuard, dead apt) in /usr/local/bin, systemd wg-relay.service, wg0 10.99.0.1, UDP 51821 DNAT to 10.99.0.2:51821. Scripts in /home/ari/Data/OpenWrtOne/code/relay/. GCP firewall rule wireguard-relay (UDP 51820, 51821, tag zhinu) created by Ari and verified with packet counters.
+Router: kmod-wireguard + wireguard-tools + luci-proto-wireguard. wg_relay 10.99.0.2 dials out to chilhuacle (keepalive 25). wg_remote 10.98.0.1:51821. Zones relay (only UDP 51821 in) and remote. Doors: phone 10.98.0.2 -> .138 tcp 80; Paula3 10.98.0.3 -> .138 tcp 1883; ping to the router. Backups: router /root/backup-20261025-wireguard/, sysupgrade backup config-backups/openwrt/04-wireguard.tar.gz (chmod 600, contains private keys).
+Phone peer "Ari phone": QR made locally and the private key shredded after scanning. If he needs it again, make a new key and peer.
+Paula3 (Debian 13, ifupdown + wpa_supplicant): wireguard-tools, /etc/wireguard/factory.conf (10.98.0.3, AllowedIPs 192.168.1.138/32 + 10.98.0.1/32). factory-tunnel.timer runs /usr/local/sbin/factory-tunnel every 15 s: tunnel down on MainRouter24/MainRouter (so the home LAN works with the satellite down), up on any other network, renews DHCP when the SSID changes. Hotspot "Ari’s iPhone" (curly apostrophe, hex SSID) at priority 1, home at 10. Round trip tested both ways.
+PaulaDeployer (written, NOT built): WifiNetworkProcessingHandler.java (formName WifiNetwork: status/select/auto, falls back to Automatic after 30 s) plus a Wi-Fi panel in the (i) popup (index.html, app.js, style.css). Status code tested on Paula3.
+factory2: Claude Code 2.1.310 (native install) logged in with Ari's Pro account, tmux, curl. FactoryChat hooks + send-to-chat/join-chat skills in ~/.claude (backups *.before-*). ~/StreamSessions trusted. start-stream-session.sh  [notify] starts a tmux session with a first prompt; chat name stream---xxxx; max 2 sessions. stop-stream-session.sh  stops it cleanly. Both tested: the session joined the chat and messaged back in 6 s.
+Doc 07: Built sections, the section 10 recipe (Cleotilde from scratch for a customer, with a "before sale" list) and the README log are updated. The PDF was regenerated with python-markdown + weasyprint (keep the HTML head; blank line before lists; 4-space nested lists; no emoji).
+
+Next steps:
+1. Ask Ari: start the stream sessions on Sonnet (saves Pro limits) or Opus? If Sonnet, add --model sonnet to the claude call in ~/StreamSessions/start-stream-session.sh on factory2.
+2. Write the Orchestrator launcher (Ari builds): the Orchestrator on factory2 accepts a fixed-format direct message to "Factory2" (e.g. StartStreamSession##) and runs only start-stream-session.sh. No free text as a command.
+3. PaulaDeployer Stream 2 Chat: "New session on factory2" as the first option in the dialog (preselected when the tunnel is up). The roster loads in the background. Send the request, wait for a roster name starting with stream--, then stream to it (Ari builds).
+4. Ari builds and deploys PaulaDeployer (Wi-Fi panel), then restarts Tomcat (↻). Test in the paddock: hotspot on, phone opens http://paula3.local (untested on the hotspot; note the wlan1 IP first).
+5. Optional doors: phone -> .125:8899 (chat page from the field); Paula -> the factory NUC (Confirm button). Restrict per peer with src_ip, like the existing doors.
+6. Add the Paula/streaming setup to doc 07 and regenerate the PDF.
+7. Later: Network Rules / rpcd plugin so the doorbell opens and closes the doors (the doors are always open today). chilhuacle disk 96% full (420 MB free). Not yet done: zhinuwebapp/zhinuheart commits, the StartWebserverBG.sh fix, revoking the GitHub tokens, the ESP32 watchdog.
+</pasted_content id="2959">
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Quick test to check that the flag is accepted and the session comes up on Sonnet:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've stopped the streaming work. Where things stand:
+
+- **Done:** `start-stream-session.sh` on factory2 now starts sessions with `--model sonnet`. The old version is saved as `start-stream-session.sh.before-sonnet`. I ran one test session, which answered on Sonnet, then stopped it; nothing is running on factory2 now.
+- **Not started:** the Orchestrator launcher. I only read the chat package and changed nothing there.
+
+What happened today?
+
+--- USER ---
+i went to take a picture in a place in the farm without wifi, i did not have paula, i did have the wireguard on so i could reach the factory and continuity no problem, but there is no equivalent to paula "stream to a new chat in the factory" or even better since i was already working in the chat  and went to take a picture to share with the chat, it would be great if i could go to a place in my farm and send a photo to a chat in my  computer
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Something close to this may already exist: the Orchestrator has a `PhotoUploadServer`, and the hook mentions a phone page at `192.168.1.125:8899`. I'll check what it does.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Nothing new needs building. The photo page already does what you want; it just isn't reachable through the tunnel. Three small things would make it work from the field:
+
+1. **Router door (I can do it):** add `Cleotilde-Door-PhotoChat` next to the Continuity door. It allows only the phone (`10.98.0.2`) to reach this computer (`192.168.1.125`) on tcp 8899. This needs a firewall reload, not a network restart, so Wi-Fi and the house stay up.
+2. **This computer's firewall (you):** ufw is enabled here and I can't read its rules without sudo. At home your phone comes from `192.168.1.x`, but through the tunnel it comes from `10.98.0.2`, so ufw may block it. Run:
+   `! sudo ufw status numbered`
+   If nothing there would let `10.98.0.2` in, add:
+   `sudo ufw allow from 10.98.0.2 to any port 8899 proto tcp`
+3. **Phone profile (you, maybe):** in the WireGuard app, check that the "Factory" tunnel's AllowedIPs include `192.168.1.125`. If it lists `192.168.1.0/24`, it's already covered. If it lists only `.138`, add `192.168.1.125/32`. You can edit that field without a new key.
+
+Then, on 4G with WireGuard on, open `http://192.168.1.125:8899`, pick this chat (`cleotilde-a413`) and send a photo. The page also shows the conversation, so you can read replies and type from the field too.
+
+Should I add the router door now?
+
+--- USER ---
+<task-notification>
+<task-id>b9ai4pr4f</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm still waiting for your answer: should I add the router door (phone `10.98.0.2` to this computer `192.168.1.125`, tcp 8899)?
+
+--- USER ---
+<task-notification>
+<task-id>b12aups7b</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No new chat messages. Your answer is still pending: should I add the router door from the phone to the photo page?
+
+--- USER ---
+<task-notification>
+<task-id>bsdyis5k0</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm still watching the chat for you. The router door to the photo page isn't added yet; I'm waiting for your yes.
+
+--- USER ---
+<task-notification>
+<task-id>bj4vf04v3</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No chat messages so far. The router door from the phone to the photo page still needs your yes before I add it.
+
+--- USER ---
+what do you mean by add a door -photocvhat. what are you adding?>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+A "door" is one firewall rule on the OpenWrt One. Traffic that arrives through WireGuard lands in the router's `remote` zone, and that zone blocks everything by default. Each door lets one tunnel peer reach one machine on one port. There are two doors today:
+
+- **Cleotilde-Door-Continuity:** your phone (`10.98.0.2`) can reach factory2 (`192.168.1.138`) on port 80. This is how Continuity worked from 4G.
+- **Cleotilde-Door-FactoryChat:** Paula3 (`10.98.0.3`) can reach factory2 on port 1883 (the chat broker).
+
+The new door would be one more rule like those:
+
+- **Cleotilde-Door-PhotoChat:** your phone (`10.98.0.2`) can reach this computer (`192.168.1.125`) on port 8899, the photo page.
+
+On the router it is:
+
+```
+uci set firewall.door_photochat=rule
+uci set firewall.door_photochat.name='Cleotilde-Door-PhotoChat'
+uci set firewall.door_photochat.src='remote'
+uci set firewall.door_photochat.src_ip='10.98.0.2'
+uci set firewall.door_photochat.dest='lan'
+uci set firewall.door_photochat.dest_ip='192.168.1.125'
+uci set firewall.door_photochat.proto='tcp'
+uci set firewall.door_photochat.dest_port='8899'
+uci set firewall.door_photochat.target='ACCEPT'
+uci commit firewall
+/etc/init.d/firewall reload
+```
+
+It changes nothing else:
+- Only your phone's tunnel address gets through, not Paula3 and not anyone on the internet.
+- Only port 8899 on this computer opens, not SSH or anything else on it.
+- The firewall reload takes about a second and doesn't touch Wi-Fi or the network.
+- Undoing it is `uci delete firewall.door_photochat; uci commit firewall; /etc/init.d/firewall reload`.
+
+Without this rule, the router drops the phone's request before it reaches this computer, even with WireGuard on.
+
+--- USER ---
+so you are using the word door as a metaphore for firewall rule right?
+
+--- CLAUDE ---
+Yes. A "door" is just a firewall rule that lets one tunnel peer reach one machine on one port. I picked the word up from doc 07, which uses it alongside "doorbell" (the planned way to ask for access). In practice it's a plain OpenWrt firewall rule named `Cleotilde-Door-…`.
+
+Should I add the rule?
+
+--- USER ---
+yes, add it
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The rule is live on the router. Next I'll add it to doc 07 where the other rules are listed.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I added the rule and it's live on the router (`Cleotilde-Door-PhotoChat`): only your phone's tunnel address can reach this computer on port 8899. Its packet counter is still at 0, so nothing has gone through it yet. I also added it as "Photo Chat" to the rules table in section 4a of doc 07; I didn't regenerate the PDF.
+
+Two checks on your side before testing from 4G:
+
+1. **This computer's firewall:** ufw is on here and I can't see its rules without sudo. Run `! sudo ufw status numbered`. If nothing there lets `10.98.0.2` (or anything) in on 8899, add it with `sudo ufw allow from 10.98.0.2 to any port 8899 proto tcp`.
+2. **The phone's "Factory" tunnel:** in the WireGuard app, check that AllowedIPs covers `192.168.1.125`. `192.168.1.0/24` covers it; if only `.138` is listed, add `192.168.1.125/32`.
+
+To test: Wi-Fi off, WireGuard on, open `http://192.168.1.125:8899`, pick `cleotilde-a413` and send a photo. I'm watching this chat, so I'll see it arrive.
+
+--- USER ---
+how did you know my phone ipaddress? also all these firewalls rules how do i see them? i know i could go to the openwrt admin, but i would like to see them in th Cleotilde telenomewebapp
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The `10.98.0.2` address isn't your phone's 4G address. It's the phone's address inside the tunnel, which we set on 2026-10-25 when we made the "Ari phone" peer (inner tunnel `10.98.0.0/24`: router `.1`, phone `.2`, Paula3 `.3`). The router has it as `allowed_ips='10.98.0.2/32'`, and your phone's WireGuard profile has the same address. Whatever 4G network you're on, traffic through the tunnel always arrives as `10.98.0.2`. That's why each rule can be limited to one device.
+
+For showing the rules in the Cleotilde webapp, I'll first look at what Cleotilde can already read from the router.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I found the router-reading code (`CleotildeMicroController` in the framework) and the `teleonomewebapp`. Next I'll check how the webapp shows Cleotilde data today, so the firewall rules view fits in.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Here's what's there now and what I'd propose. I haven't changed anything yet.
+
+**What Cleotilde can see today:** the Pi reads the router through ubus, logged in as a restricted `cleotilde` user. That user's permissions (`/usr/share/rpcd/acl.d/cleotilde.json` on the router) cover interfaces, Wi-Fi, DHCP leases, ARP and temperature. **They don't cover the firewall,** so Cleotilde can't read the rules yet.
+
+**Proposal: a read-only "Network Rules" panel in teleonomewebapp, built like the Doorbell panel.**
+
+1. **Router (I can do this, with your OK):** add `"uci": ["get"]` and read access to the `firewall` config only to the `cleotilde` permissions, then reload rpcd (a second or two, no network effect). I'd deliberately leave out the `network` config, because it holds the WireGuard private keys.
+2. **teleonomewebapp (I write it, you build it):**
+   - a `GetNetworkRulesProcessingHandler` that asks the router for the live firewall config through the same ubus client `CleotildeMicroController` uses, and returns JSON;
+   - a `NetworkRulesPanel.js` template plus a new panel style in `RenderingEngine.js`, next to `DoorbellPanel`.
+   - Reading the router live means the panel always shows what the router is actually doing, rather than a copy that can drift.
+3. **What the panel shows:** the gate (Remote Access) and each tunnel rule (Continuity, FactoryChat, PhotoChat), each with who can use it (`10.98.0.2` = Ari phone, `.3` = Paula3), the destination machine and port, and whether it's on. Optionally it can also show packet counters ("used today") and the router's other rules (port forwards, WAN input).
+4. **Later, not now:** opening and closing rules from the panel. That belongs with the rpcd `cleotilde` plugin (doc 07 sections 4–5), since today the `cleotilde` user is read-only on purpose.
+
+Two things to decide:
+- Should it show **only the tunnel rules** (the ones Cleotilde manages) or **all the router's firewall rules**? I'd start with only the tunnel rules plus the gate, and the router's other rules in a collapsed section.
+- **Packet counters:** they need one more read permission (the `nft` counters aren't in uci). That would mean a small read-only rpcd script on the router. Do you want them in the first version, or later?
+
+--- USER ---
+only the tunnel rules for now, counters later. however you have to rememeber that whatever information endsup in the Teleonome.denome file is basically public information, so no conifidential information can be in the Teleonome.denome
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Got it: the denome is public, so nothing confidential goes in it. I'll save that as a memory first, then check what my design would put in the denome.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the router permission. I'll back up the ACL file, add read access to the `firewall` config only, and reload rpcd.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the panel template, following `DoorbellPanel.js`:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the denome script. It adds only the panel entry (name, style, position), with no rule data:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'll test the script on a local denome copy (v4 → v5 → v6), and fetch the router's real `uci get` firewall output to try the handler's logic on it.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The Network Rules panel is written and ready for you to build. It shows only the tunnel rules, and none of the rule data goes into the denome. I checked the panel's logic against the router's real firewall rules, but not on the Pi yet: the read itself, as Cleotilde's restricted user, is untested because that user's password lives only on the Pi.
+
+**How it keeps rules out of the denome:** each time the page refreshes, the webapp reads the rules straight from the router and sends them only to the browser. Nothing about the rules is stored on the Pi. The only thing added to the denome is the panel entry itself (name, style, position), like the Doorbell panel.
+
+**Router (done):** Cleotilde's read-only router login can now read the firewall settings, and only those. The network settings, which hold the WireGuard private keys, stay closed. The old permissions file is backed up on the router as `/root/cleotilde.json.before-firewall-read`.
+
+**teleonomewebapp (written, not built):**
+- `forms/GetNetworkRulesProcessingHandler.java` (new): reads the gate and the tunnel rules from the router.
+- `templates/NetworkRulesPanel.js` (new): the table, refreshed every 30 s.
+- `RenderingEngine.js`, `TeleonomeConstants.js` and `index.html`: one line or block each, next to the Doorbell entries.
+- `WebAppContextListener.java` already had uncommitted changes before today; those aren't mine.
+
+**Checks so far:**
+- The handler compiles on its own against the webapp's Java 8 setting.
+- Run on the router's real firewall config, it lists:
+
+| Rule | Who | To | Port |
+|---|---|---|---|
+| Remote-Access (gate) | the relay | the router | 51821 udp |
+| Remote-Ping | every tunnel peer | the router | icmp |
+| Continuity | Ari phone (10.98.0.2) | .138 | 80 |
+| FactoryChat-Paula3 | Paula3 (10.98.0.3) | .138 | 1883 |
+| PhotoChat | Ari phone (10.98.0.2) | .125 | 8899 |
+
+- The denome script, run on a local copy, puts the panel at position 10, right after Network Status. Running it twice gives the same result.
+
+**Your steps:**
+1. Build and deploy teleonomewebapp.
+2. On the Pi, create `~/Teleonome/TunnelPeers.json` with `{"10.98.0.2": "Ari phone", "10.98.0.3": "Paula3"}`. It's a local file, never the denome. Without it the panel shows bare IPs.
+3. Apply `/home/ari/Data/OpenWrtOne/code/cleotilde_denome_v6_network_rules.py <in.denome> <out.denome>` to the live denome, the same way as v4/v5.
+4. Open the Home page. If the router read fails, the panel shows the error in red; the likeliest cause is that the webapp can't read `CleotildeRouter.secret`.
+
+**Doc 07** now has a "Built 2026-10-27" section for the panel. It also has a note on section 4a: the plan there to store every rule (IPs, ports) in the denome clashes with your "the denome is public" rule and needs redesigning. I also saved that rule as a memory for future sessions.
+
+Possible later addition: names instead of IPs in the "To" column (factory2, your computer), from the router's host list that Cleotilde can already read.
+
+--- USER ---
+<task-notification>
+<task-id>b38tzs19n</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No new chat messages, and I'm still watching for them. The Network Rules panel is waiting for you to build and deploy teleonomewebapp, and to apply the v6 denome script.
+
+--- USER ---
+<task-notification>
+<task-id>bsdg5appq</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Still no chat messages; I'm watching for them. Nothing new on my side: the Network Rules panel still needs you to build and deploy it.
+
+--- USER ---
+<task-notification>
+<task-id>b8brv0nsf</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No chat messages yet, and I'm still watching for them. Nothing has changed since the last update.
+
+--- USER ---
+<task-notification>
+<task-id>bmbi4gjv0</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Still watching FactoryChat. No messages have come in.
+
+--- USER ---
+<task-notification>
+<task-id>bi2jx62y9</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a413"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've restarted the chat watch. No messages yet.
+
+--- USER ---
+for 3,  in.denome and out.denome should both be Teleonome.denome in Cleotilde correct
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+v6 is now in the doc 07 recipe, after v4/v5. One thing to check: the script is in `/home/ari/Data/OpenWrtOne/code/` on this computer. If it isn't on the Pi yet, copy it over first (with `scp`, like the earlier ones).
+
+--- USER ---
+
+
+<pasted_content id="2959">
+sudo python3 v6.py Teleonome.denome Teleonome.denome
+Traceback (most recent call last):
+  File "/home/pi/Teleonome/v6.py", line 56, in <module>
+    main(sys.argv[1], sys.argv[2])
+  File "/home/pi/Teleonome/v6.py", line 24, in main
+    d = json.load(open(src))
+FileNotFoundError: [Errno 2] No such file or directory: 'Teleonome.denome'
+</pasted_content id="2959">
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The script is fine. It looked for `Teleonome.denome` in the current folder and didn't find it there. Either the shell isn't in `/home/pi/Teleonome`, or the denome there has another name. Please run:
+
+```bash
+pwd; ls -la /home/pi/Teleonome/*.denome* | head
+```
+
+- If `pwd` isn't `/home/pi/Teleonome`, run `cd /home/pi/Teleonome` first. Using full paths avoids the question:
+  `sudo cp /home/pi/Teleonome/Teleonome.denome /home/pi/Teleonome/Teleonome.denome.before-v6 && sudo python3 /home/pi/Teleonome/v6.py /home/pi/Teleonome/Teleonome.denome.before-v6 /home/pi/Teleonome/Teleonome.denome`
+- If `ls` shows no `Teleonome.denome` at all, don't run anything yet; paste me the listing. The Hypothalamus may have moved or renamed it when it stopped, and the script should run on the file it starts from.
+
+--- USER ---
+it worked, panel added at position 1, will deal with this tomorrow , send a summary to continuity and a prompt to start a new chat tomorrow
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The summary and resume prompt are in Continuity, as item 287 on today's date. This session has no web link, so the item opens through the terminal session id ("Resume in terminal"). To start fresh tomorrow, copy the item's text into a new chat. Its next steps, in order:
+
+1. **Panel position:** v6 reported position 1, but on my local copy it gave 10. In the Pi's live denome the Doorbell panel is probably at position 0 or has none, so check the Home page order.
+2. **Deploy:** build and deploy teleonomewebapp if you haven't already, create `TunnelPeers.json` on the Pi, then check the panel.
+3. **Photo Chat field test:** check ufw on this computer and the phone's AllowedIPs, then send a photo from 4G. The router rule is in place but nothing has gone through it yet.
+4. **Doc 07 section 4a:** redesign it so no rule details go into the public denome.
+5. **Later:** packet counters, names instead of IPs in the "To" column, and the other pending items.

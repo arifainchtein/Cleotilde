@@ -1,0 +1,2964 @@
+
+--- USER ---
+here is the summary of yesterday before we ran out of credits, i am back so lets continue with the doorbell. here is the prompt: 
+
+<pasted_content id="47f2">
+Resume prompt — Zhinu + Cleotilde doorbell — 2026-10-19
+
+Context:
+You are continuing work on Zhinu (cloud Teleonome on chilhuacle.info 104.154.239.253, ssh arifainchtein@chilhuacle.info -i ~/.ssh/dg_rutasegura, Zhinu lives in /home/pi/zhinuhypothalamus) and the Cleotilde doorbell/remote access (design doc /home/ari/Data/OpenWrtOne/documents/07-network-rules-design.md, read it first, plus your memory files, especially zhinu-chilhuacle-runtime and cleotilde-board-flashing). Sources: /home/ari/Data/Teleonome/{framework, zhinuhypothalamus, zhinuwebapp, zhinuheart, zhinumedula}. Cleotilde Pi = ssh Cleotilde (192.168.1.179), Cleotilde ESP32 firmware = /home/ari/Data/DigitalStables/Projects/Cleotilde/Cleotilde.ino (repo github cleotilde, release v7 = FIRMWARE_VERSION 0.5; next version must say 8).
+
+Rules:
+Never build, commit, push or deploy Teleonome projects; Ari does it (verify with standalone javac in the scratchpad only). Ask before changing chilhuacle beyond what is listed. Keep all remembereddenewords tables (Ra/Tlaloc history). Talk in the terminal only. Ari is new to networking: explain simply.
+
+Done 2026-10-19:
+Cleotilde: SFTP pulse to Zhinu restored (Publish Via SFTP mutation was Active=false). ESP32 VerifyUserCode done (UTC TOTP, last 3 min, earlier steps once, current step reusable, 5 wrong/hour = lockout, GetSensorData fields 18-19) plus Set/GetProductDefinition. CleotildeMicroController is now the mother (denome Mother=true on Cleotilde MicroController); denome renamed Network Inspector -> Cleotilde (backup Teleonome.denome.before-cleotilde-rename, copy cleotilde/denome/Teleonome.denome.cleotilde-v7). Doc 07 updated + PDF on Continuity.
+Zhinu: Java 11 installed at /opt/temurin-11-jre (system java still 8). Tomcat 8.0.47 patched (catalina.sh endorsed flag removed, bin/setenv.sh JRE_HOME), must be started from /home/pi/zhinuhypothalamus (lib/app.properties is read relative to cwd). StartHeartBG.sh, StartHypothalamusBG.sh, StartMedula.sh use Java 11 (backups *.before-java11). lifecycleevent truncated, disk ~1.1 GB free (99% before). Heart ported to moquette 0.18 (zhinuheart), running with heart/lib/override log4j 2.17.1 classpath workaround. ZhinuMedula rewritten (finds processes by command line, startup grace, Tomcat check, single instance). known_hosts got chilhuacle RSA/ECDSA keys.
+Code fixed but NOT yet built: framework DenomeManager.writeDenomeToDisk (no hard-coded /home/pi/Teleonome), PulseThread 30 s back-off on pulse errors, PostgresqlPersistenceManager.getTeleonomeNamesInOrganism empty-safe; zhinuwebapp LatestPulseReader (pulses + teleonome list from ROOT/name/Teleonome.denome), web.xml maps /TeleonomeServlet to ZhinuServlet; ZhinuHeartConnector externalDataSummary (External Data stale fix).
+
+Next steps:
+1. Ari: mvn clean install framework, then mvn install zhinuwebapp and zhinuhypothalamus. Then check on chilhuacle: http://localhost/ and ZhinuServlet?formName=GetInitialData return 200 with Ra/Tlaloc/Cleotilde/ChinampaMonitor; no 404 on TeleonomeServlet calls (tomcat/logs/localhost_access_log).
+2. Check the hypothalamus pulses (Teleonome.denome mtime under 2 min, no "Uncaught exception in pulse cycle", External Data for Ra/Tlaloc not stale). Restart it on the new jar if Medula has not.
+3. Restart Heart on the rebuilt Heart.jar and put heart/StartHeartBG.sh back to plain java -jar (Java 11); check ports 1883/9876 and HeartPing.info.
+4. Optional cleanup: 2-byte {} files /home/pi/Teleonome/Teleonome.denome and .previous_pulse on chilhuacle; duplicate denes in Cleotilde denome (Pulse Late, Sample Frequency, Cleotilde Status...).
+5. Doorbell continues per doc 07: Zhinu outbox file /home/pi/Teleonome/Mailbox/Cleotilde.json fetched by Cleotilde with Download Via SFTP; Mailbox footer button on Zhinu; Network Rules actuator + router rpcd plugin; WireGuard on chilhuacle (needs sudo + GCP firewall UDP 51820/51821).
+</pasted_content id="47f2">
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Still on the stale External Data: Ra and Tlaloc have kept their old values all day, so Zhinu has not applied any of their pulses. I'm checking whether Zhinu's listener logs anything.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm listening on Zhinu's message bus for two minutes to see whether Ra and Tlaloc's pulses actually arrive there. The first try failed because I forgot to copy one file.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I can't see the broker's own errors on chilhuacle (they go to a pipe), so I'm reproducing it locally: same broker build, same settings, one large message.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Locally, size alone doesn't break it. Next I'm adding Zhinu's real Heart listener and a real pulse as the payload.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+A real 137 KB pulse goes through fine locally. Next I'm trying Cleotilde's real 867 KB denome, the largest one Zhinu receives.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The PulseWatcher publishes pulses as "retained" messages (the broker keeps the last one and hands it to each new listener). Testing that locally now.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+No tcpdump there, so I'll use a tiny raw MQTT client in Python that prints each packet the broker sends before it closes.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Interesting: the 94 KB "Status" message gets through fine, and only the retained OrganismUpdate kills the connection. I'm checking how big each teleonome's pulse is when it arrives.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both Zhinu changes compile. Now the home Heart's listener:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Welcome back. Before starting the doorbell I checked yesterday's list, and one thing was still broken. I found the cause.
+
+## Where things stand
+
+- **Done:** your builds are deployed. Zhinu's web page and `GetInitialData` return 200, and the TeleonomeServlet calls no longer give 404. The Heart runs on plain Java 11. Zhinu writes its denome every minute in the right folder.
+- **Still broken:** Zhinu's External Data for Ra and Tlaloc is still "stale". Yesterday's fix is in the running jar, but the pulses never reach it.
+
+## Why External Data is still stale
+
+Zhinu's **Heart** is its message bus (an MQTT broker called moquette). The PulseWatcher drops each incoming pulse on it, and Zhinu listens for those pulses.
+
+The Heart has a memory leak. In this moquette version, the code that watches each message has to hand the message's memory back when it's done. Ours never did, so every pulse (about 330 KB each) leaked. After a couple of hours the Heart has no room left to send a big pulse. So when anyone subscribes to pulses (`OrganismUpdate`), it accepts and then hangs up within half a second. Small messages still get through, which is why nothing else looked wrong.
+
+How I checked:
+- A small probe on chilhuacle showed the hang-up.
+- Locally, with the same broker and memory capped at 24 MB, I replayed Tlaloc's real pulse 120 times. Without the fix the broker jams; with it, all three listeners get every message.
+
+On top of that, Zhinu's listener connected only once and never reconnected. So any Heart restart cut it off for good.
+
+**The home Heart has the same leak** (`heart/PublisherListener.java`, same broker version), so I fixed it there too.
+
+## Changes (not built; each compiled on its own in the scratchpad)
+
+| File | Change |
+|---|---|
+| `zhinuheart/.../ZhinuPublisherListener.java` | `onPublish` always frees the message at the end, even if the code inside throws an error |
+| `heart/.../PublisherListener.java` | same fix for the home Heart |
+| `zhinuhypothalamus/.../ZhinuHeartConnector.java` | reconnects by itself and subscribes again when the Heart restarts |
+
+**Ready for you to build:**
+1. Build `zhinuheart` and `zhinuhypothalamus`, then restart the Heart first and the Hypothalamus second.
+2. Build `heart` for the home teleonomes, whenever suits you.
+
+Until then, restarting Zhinu's Heart would only clear the leak for an hour or two, so I haven't touched it. After the restart, I'll check that Ra and Tlaloc go from "stale" to fresh.
+
+## Doorbell: next step
+
+Your deploy of the new zhinuwebapp answers Q3, so I can write the Zhinu side next (code only, you build):
+- the footer button, page and panel
+- the "Ring Doorbell" form handler
+- the outbox file `Teleonome/Mailbox/Cleotilde.json`
+- plus the `Download Via SFTP` change in Cleotilde's denome
+
+Before I start, I need three answers from doc 07:
+- **Q4:** may Zhinu's landing page show Zhinu's own footer buttons? Today they only appear after you click a teleonome.
+- **Q19 (replaces Q5):** should the 6th and last footer button be **Mailbox** (tabs: Doorbell, Idea, Todo, Documents) or only **Doorbell**? I'd suggest Mailbox, with only the Doorbell tab working at first.
+- **Q6:** is it OK that a ring takes 1–2 minutes to reach Cleotilde? The faster option is Cleotilde checking every 10 s.
+
+The WireGuard part (the tunnel through chilhuacle) can wait. It needs your answers on the Google Cloud firewall rules and the tunnel addresses (Q13, Q14).
+
+--- USER ---
+<task-notification>
+<task-id>bloiednsx</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've turned the FactoryChat watch back on (it switches itself off every 30 minutes). Nothing else has changed. I'm still waiting for your answers on Q4, Q19 and Q6 before I start on the doorbell code. The Heart and Zhinu fixes are ready for you to build whenever suits you.
+
+--- USER ---
+q4 yes, q19 your suggestion, q6 lets try cleotilde checking every 10 sec and see how we go
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Thanks. I'll start by looking at how the Zhinu webapp draws the footer and handles forms, and how CleotildeMicroController talks to the board. Then I'll design the 10-second poll.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Something important: the design assumed Zhinu's pages are behind a login and served over HTTPS. Checking whether that's true.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Confirmed: Zhinu serves plain HTTP only (port 80) and has no login on its pages. I'll come back to that. First, the Cleotilde side, to design the 10-second poll.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I have what I need on the Cleotilde side. Now, how the existing SFTP publisher connects to chilhuacle, so the 10-second poll can reuse its settings:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Safe: the PulseWatcher only acts on files named `start` and `complete`, so a `Mailbox` folder with `.json` files is left alone. Next, how the webapp draws the landing page and footer:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Writing the Zhinu side. First a shared `Mailbox` helper for the outbox file, the password check and the rate limit:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the two form handlers:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the page. Let me look at an existing panel template and how index.html loads them:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The page redraws itself on every Zhinu pulse (every 60 s), which would wipe a half-typed form. So the panel keeps what you type in a variable and puts it back after each redraw. Writing the panel:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Wiring the panel into the rendering engine, the constants and index.html:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+TeleonomeConstants.js shows 319 changed lines, more than my one line. Checking that my edit didn't rewrite its line endings:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Fine: those were earlier uncommitted changes, and mine is the one line. Now compiling the three new Java classes against the webapp's libraries:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Compiles. Now the small tool that sets the doorbell password. It stores only a salted hash, and I'll check that Java accepts the hash Python makes:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Works, and running it twice is safe. A quick check that the footer code can draw a 6th button:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The footer handles any number of buttons, sorted by position. Now the Cleotilde side: a `DoorbellPoller` thread inside CleotildeMicroController. Checking which JSch version the framework uses:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+JSch 0.1.55's `rename` uses OpenSSH's atomic rename when the server supports it, so the answer file can be written whole, the same way as the outbox. Writing the poller:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the controller: config parameters, starting the poller, the code check, and the OLED page.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now the old `verifyUserCommandCode` duplicates the new method. I'll have it call a shared `askBoardToVerify` instead:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Classpath order problem: the old `framework.jar` copy of the class came first. Putting my freshly compiled classes first:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Nothing printed because log4j isn't set up in the test. Turning on console logging to see why it didn't connect:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The direct get works (and the server supports atomic rename), so the failure is somewhere else in `pollOnce`. Calling it directly to get the stack trace:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+chilhuacle has Python 3.5, which doesn't keep JSON key order. Making the denome script preserve it, so the rewritten denome only differs by the new parts:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The dry run on chilhuacle's Python only adds lines. Now updating design doc 07 with today's decisions and the changed flow:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The doorbell is written and tested, apart from the build and deploy, which are yours. Nothing in a Teleonome project has been built, committed or pushed.
+
+## What I built
+
+**Zhinu side:**
+- A new **Mailbox** button, the 6th in Zhinu's footer, with a bell icon.
+- The page has four tabs (Doorbell, Idea, Todo, Documents). Only Doorbell works for now.
+- On the Doorbell tab you tick services, choose hours, type the 6-digit code and the doorbell password, then press Ring.
+- Zhinu never checks the code. It only checks the doorbell password, then puts the ring in a "letter box" file: `/home/pi/Teleonome/Mailbox/Cleotilde.json`.
+- 5 wrong passwords from the same address in an hour, and Zhinu refuses that address for an hour.
+
+**Cleotilde side:**
+- Every 10 seconds Cleotilde opens that letter box over SFTP, the same secure file copy it already uses for its pulse.
+- For each new ring it asks the board whether the code is right.
+- It writes the answer back next to the letter box, in `Cleotilde.delivered.json`. The page checks every 5 seconds, so you see **"code valid"** or **"code refused"** about 10–20 seconds after ringing.
+- For now a valid ring is only shown on the board's OLED (page 4). Opening FACTORY2 and other services comes with the next piece, Network Rules.
+
+**Safety rules on Cleotilde:**
+- A ring older than 3 minutes is marked "expired" without asking the board, so old or copied rings can't use up your 5 wrong codes.
+- If the board doesn't answer (a USB glitch), Cleotilde asks again 10 s later instead of calling the code wrong.
+- Cleotilde remembers answered rings, so a restart never asks the board twice about the same code.
+
+**Testing:**
+- I ran the real Cleotilde code against a test letter box on chilhuacle, with a stand-in board. Valid, wrong, expired, no-answer-then-retry and restart all behaved correctly. The test folder is removed.
+- All the Java compiles on its own.
+- The page code passes a syntax check, but I haven't been able to see it in a browser.
+- There are no services to tick yet, so a ring is only a code test for now. That's what makes it a good first test.
+
+## Two answers I had to work around
+- **Zhinu has no login.** The login code exists but no web address reaches it, which is why you now have the doorbell password.
+- **Zhinu is plain HTTP.** As you chose, HTTPS comes later. Until then, the code and the password travel unencrypted over 4G.
+
+## Changes on chilhuacle (small)
+- I created the folder `/home/pi/Teleonome/Mailbox`, owned by `pi`. If Tomcat had created it, it would belong to root and Cleotilde couldn't write its answers there.
+- I copied the two scripts to `~/zhinu-tools/` in your account there.
+
+## Steps for you
+1. **Build:** `framework` (Cleotilde poller), then `zhinuwebapp`, `zhinuheart` and `zhinuhypothalamus`. `heart` (the home Heart) whenever suits you.
+2. **On chilhuacle, set the password:** `sudo python3 ~/zhinu-tools/set_doorbell_password.py` (10+ characters).
+3. **On chilhuacle, add the button and deploy:**
+   - Stop Medula and the Hypothalamus. Medula would restart the Hypothalamus, and the Hypothalamus rewrites the denome every minute.
+   - Run `python3 ~/zhinu-tools/add_mailbox_page.py`. It keeps a backup copy, and running it twice does nothing.
+   - Deploy the new war, Heart and Hypothalamus. Start the Heart first, then the Hypothalamus, then Medula.
+4. **On Cleotilde's Pi:** deploy the new framework jar. The poller starts by itself; no denome change is needed.
+5. **Test from your phone:** open chilhuacle.info → Mailbox → Ring with your authenticator code. You should see "code valid" in under 20 s, and the ring on the board's OLED.
+
+If you'd like, once you've built, tell me and I'll do steps 3 and 5 and check the logs.
+
+I've updated design doc 07 with today's decisions (Q3–Q6, Q19, the new HTTPS question Q23) and a short section on how the doorbell works now.
+
+--- USER ---
+<task-notification>
+<task-id>bb162ytuw</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The FactoryChat watch is back on; nothing has come in. Nothing else has changed. The doorbell code and the Heart fixes are ready for you to build. After that, set the doorbell password on chilhuacle, add the Mailbox button and deploy. Tell me once it's built and I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>bo1e1o1j8</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I turned the FactoryChat watch back on, and no messages have come in. Still waiting for you to build. Tell me once it's done and I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>b4k6kjytv</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I turned the FactoryChat watch back on, and no new messages have arrived. I'm still waiting for your build. Once it's done, I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>b8kwh4i9u</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've turned the FactoryChat watch back on again, and no messages have come in. I'm still waiting for your build, then I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>b1smkzotl</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The FactoryChat watch is back on, and no messages have come in. I'm still waiting for your build, then I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>biqjamdx6</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I restarted the FactoryChat watch; no messages so far. I'm still waiting for your build. After that I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+<task-notification>
+<task-id>bjq7uyia3</task-id>
+<summary>Monitor event: "FactoryChat messages for cleotilde-a9b6"</summary>
+<event>[Monitor expired after 30m with no events delivered. Re-arm it if you still need the watch — and widen the filter if silence was unexpected.]</event>
+</task-notification>
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I restarted the FactoryChat watch, and still no messages have come in. I'm waiting for your build; once it's done I'll do the chilhuacle steps and the test ring.
+
+--- USER ---
+i am back, you can turn off the chat for now
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've stopped the chat watch. Checking whether anything has been built or deployed since:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The chat watch is off. Nothing has been built or deployed since this morning, so everything below is waiting for your builds. The doorbell password hasn't been set on chilhuacle yet either.
+
+## Done today (written and tested, not built)
+
+**1. Zhinu's External Data was still stale.** The cause is a memory leak in the Heart (the message bus): it never frees a message after handling it. After a couple of hours it can't pass on full pulses any more, so Zhinu stops receiving Ra's and Tlaloc's data.
+- I fixed it in `zhinuheart` and in the home `heart`, which has the same bug.
+- Zhinu's listener in `zhinuhypothalamus` now reconnects by itself when the Heart restarts.
+
+**2. The doorbell**, with your choices: Mailbox button, Cleotilde checking every 10 s, a doorbell password, HTTPS later.
+- **Zhinu (`zhinuwebapp`):** the Mailbox page puts each ring in a letter-box file. It checks only the doorbell password, never the code.
+- **Cleotilde (`framework`):** every 10 s it fetches new rings, asks the board whether each code is right, and writes the answer back. The page shows "code valid" or "code refused" within about 20 s.
+- I tested it against a test letter box on chilhuacle with a stand-in board.
+- On chilhuacle I created the `Mailbox` folder and copied two scripts to `~/zhinu-tools/`.
+- Design doc 07 is updated.
+
+## Next steps
+
+1. **You build:** `framework`, `zhinuwebapp`, `zhinuheart`, `zhinuhypothalamus`. Build `heart` (home) whenever suits you.
+2. **You set the doorbell password** on chilhuacle (it asks you to type it, so it has to be you): `sudo python3 ~/zhinu-tools/set_doorbell_password.py`
+3. **Me, if you say so:**
+   - On chilhuacle: stop Medula and the Hypothalamus, add the Mailbox button to Zhinu's denome, deploy the new jars and war, and start the Heart, then the Hypothalamus, then Medula.
+   - Then check that External Data turns fresh.
+4. **Cleotilde Pi:** deploy the new framework jar.
+5. **Test:** you ring from your phone (chilhuacle.info → Mailbox) and I watch the logs on both ends.
+
+After that, the doorbell's next piece is Network Rules, so that a valid ring actually opens FACTORY2. The WireGuard tunnel still needs your answers on Q13 and Q14 (Google Cloud firewall rules and tunnel addresses).
+
+--- USER ---
+actually  i had  a thought, lets remove the password. if somebody tries 5 times and it locks the solution is simple, put a button in cleotilde that i can releas the lock. so therefore the possibilit y of not being in my network and have somebody try 5 times and me being locked out for 1 hr is not really that significant
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Makes sense: a lockout only costs you an hour while you're away from home, and you can clear it from home. I'll remove the password and add a "release lock" control on Cleotilde.
+
+One catch to check first: Cleotilde's web commands normally need a TOTP code, and the board refuses every code while it's locked. So the release command must work without a code. Looking at how commands are checked:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both Tomcat and the Hypothalamus run from `/home/pi/Teleonome`, so they can share files there.
+
+Starting with the firmware: the new command and version 8.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Compiling the firmware to check it (no flashing):
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+While that compiles: Cleotilde's side. The controller will remember the board's lock state from each pulse's `GetSensorData` (fields 18–19) and get a `releaseCodeLock()`:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'll restructure `pollOnce` so the answers file is also refreshed when only the lock state changes, not just when a ring is answered:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The first anchor didn't match (that sentence starts mid-line), so nothing was written. Rerunning with the corrected anchor:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Compiles. Now Cleotilde's web page (teleonomewebapp). Checking that its servlet, constants and rendering engine follow the same pattern as Zhinu's:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+teleonomewebapp has its own CLAUDE.md. Reading it before I change anything there:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Its backend is Java 8, and `mvn package` deploys straight into Tomcat, so I won't build it. Writing the two handlers in Java 8 style:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Firmware 8 compiles (40% of flash used). Now compiling the two webapp handlers with a Java 8 target:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both compile. Now the panel for Cleotilde's page:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now Cleotilde's denome needs the panel on its Home page. Looking at its Home page and at the existing denome scripts:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Free positions: 10–15. I'll put the Doorbell panel at 10, right after Network Status, so nothing gets renumbered. Checking the style of the previous denome script so the new one matches:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The page code looks up each panel's chain before choosing its template. Checking what it reads from that chain, so the new panel's pointer is safe:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Each style only reads the chain inside its own branch, so pointing the panel at the Home Page chain itself is safe. Writing the denome script:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Idempotent. Now Zhinu: removing the password. I'll rewrite `Mailbox.java` without the password and rate-limit parts:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Compiles. Now the Mailbox page: remove the password field and show the lock.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Now re-testing the poller against chilhuacle with the new parts. The fake board starts locked with 5 wrong codes, and a release flag file is waiting:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Last, updating my note on firmware numbering now that the code says 8:
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I've removed the password and added a **Release lock** button on Cleotilde's Home page. Nothing is built, committed or pushed yet.
+
+## What changed
+
+**No password on Zhinu.** Anyone who finds the Mailbox page can ring, but a wrong code opens nothing. If someone uses up the 5 wrong codes, the Mailbox page says: *"The doorbell is locked… press Release on Cleotilde's Home page at home."* I deleted the password tool from your machine and from chilhuacle; no password had been set yet.
+
+**Release button.** A new **Doorbell** panel on Cleotilde's Home page shows:
+- locked or open, and how many wrong codes in the last hour
+- the recent rings
+- a **Release lock** button
+
+Normal web commands need a code, and a locked board refuses every code. So the button takes a side route: it leaves a small flag file on the Pi. Within 10 s Cleotilde's doorbell loop sees it and tells the board to forget the wrong codes. No code is asked for, because only your home network reaches that page.
+
+**Firmware 8.** The board had no command to clear the lock, so I added `ResetCodeLockout` and set the version to **Cleotilde-8**, as agreed. It compiles. Until it's flashed, the button falls back to rebooting the board, which also clears the lock because the lock only lives in the board's memory. So the button works even before you flash.
+
+I tested the lock and release path against chilhuacle with a stand-in board: a waiting release turns into the board command, and the lock state reaches both pages.
+
+## One thing to know
+While the board is locked it refuses **every** code, including the ones Cleotilde uses for its own commands. So a lockout also pauses Cleotilde's pulse upload to Zhinu until you release it or the hour runs out. The doorbell loop itself needs no code, so it keeps running.
+
+## Steps for you
+1. **Build:** `framework`, `zhinuwebapp`, `zhinuheart`, `zhinuhypothalamus`, and now `teleonomewebapp` (Cleotilde's page). `heart` (home) whenever suits you.
+2. **Cleotilde Pi:** deploy the framework jar and the webapp. Add the panel to Cleotilde's denome with `OpenWrtOne/code/cleotilde_denome_v4_doorbell.py` (it puts the Doorbell panel at position 10 on the Home page). Run it the same way as v3, while Cleotilde's Hypothalamus is stopped.
+3. **chilhuacle:** stop Medula and the Hypothalamus, run `python3 ~/zhinu-tools/add_mailbox_page.py`, deploy, then start the Heart, the Hypothalamus and Medula. The password step is gone. If you tell me once it's built, I'll do this one.
+4. **Firmware 8:** release it on GitHub as v8 and flash with Paula, whenever convenient.
+5. **Test:**
+   - Ring with a good code: "code valid".
+   - Ring 5 times with a wrong code: the Mailbox page says locked.
+   - Press Release at home: open again within about 10 s.
+
+Design doc 07 is updated to match.
+
+--- USER ---
+This session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+Summary:
+1. Primary Request and Intent:
+   - Continue the Zhinu + Cleotilde doorbell work from the 2026-10-19 resume prompt.
+   - Rules from the prompt/CLAUDE.md, verbatim where possible:
+     - "Never build, commit, push or deploy Teleonome projects; Ari does it (verify with standalone javac in the scratchpad only)."
+     - "Ask before changing chilhuacle beyond what is listed."
+     - "Keep all remembereddenewords tables (Ra/Tlaloc history)."
+     - "Talk in the terminal only."
+     - "Ari is new to networking: explain simply."
+     - Global CLAUDE.md: in Teleonome projects never run a build (mvn ...), `git commit`, or `git push`; only when Ari explicitly asks in that exact turn. Hand off when ready.
+   - Ari's answers:
+     - Q4: yes.
+     - Q19: Mailbox (Doorbell, Idea, Todo, Documents tabs; only Doorbell working).
+     - Q6: "lets try cleotilde checking every 10 sec and see how we go".
+     - HTTPS: later.
+   - Latest request: remove the doorbell password. If someone locks the board with 5 wrong codes, Ari wants "a button in cleotilde that i can releas the lock". He also said: "cletoilde is not exposed to the outside works" (so the button needs no code).
+   - Ari asked to turn off the FactoryChat monitor ("you can turn off the chat for now"). Done.
+
+2. Key Technical Concepts:
+   - Zhinu: cloud Teleonome on chilhuacle.info 104.154.239.253.
+     - ssh arifainchtein@chilhuacle.info -i ~/.ssh/dg_rutasegura.
+     - Java 11 at /opt/temurin-11-jre.
+     - Tomcat runs as root, from /home/pi/zhinuhypothalamus.
+     - Python 3.5; sudo works.
+   - Heart = moquette 0.18-teleonome1 MQTT broker. An InterceptHandler overriding onPublish must call `super.onPublish(msg)` to release the payload, or direct memory leaks.
+   - PulseWatcher publishes OrganismUpdate/OrganismStatus as retained QoS1. It only acts on files named start/complete.
+   - Cleotilde Pi: ssh Cleotilde.
+     - Hypothalamus and Tomcat both run with cwd /home/pi/Teleonome.
+     - Uploads to chilhuacle as pi@104.154.239.253 with /home/pi/.ssh/dg (JSch 0.1.55).
+     - The server supports posix-rename@openssh.com.
+   - MappedBusThread: every web command needs a valid TOTP (goodCommandCode is only set true after mother verification). So the release can't be a CommandRequest while the board is locked.
+   - Board lockout: 5 wrong codes per hour; in RAM, so a reboot clears it. While locked it refuses all codes, including Cleotilde's own Publish Via SFTP.
+   - GetSensorData fields 18 (codeFailuresLastHour) and 19 (codeLockedOut).
+
+3. Files and Code Sections:
+   - **zhinuheart/.../ZhinuPublisherListener.java** and **heart/.../PublisherListener.java**:
+     - `onPublish` now does `try { handlePublish(message); } finally { super.onPublish(message); }`; the old body was renamed to `private void handlePublish(...)`.
+     - Comment explains the moquette 0.18 leak.
+   - **zhinuhypothalamus/.../ZhinuHeartConnector.java**:
+     - Uses MqttCallbackExtended plus MqttConnectOptions setAutomaticReconnect(true) and setCleanSession(true).
+     - `connectComplete(reconnect)` re-subscribes via `new MyMQTTListener().onSuccess(null)`.
+   - **zhinuwebapp/.../servlet/Mailbox.java** (final version, no password):
+     - MAILBOX_DIRECTORY "/home/pi/Teleonome/Mailbox/", KIND_RING, RING_MAX_AGE_MILLIS 10 min, MAX_MESSAGES 20.
+     - outboxFile, deliveredFile, read(File).
+     - Synchronized addMessage: Id = base36 time + random; drops old rings; writes a tmp file then ATOMIC_MOVE.
+   - **zhinuwebapp/.../forms/RingDoorbellProcessingHandler.java**:
+     - POST only; validates a 6-digit code, minutes 1..10080, and service names `[A-Za-z0-9 _-]{1,40}` (max 10).
+     - Calls Mailbox.addMessage("Cleotilde", ring with Kind/Services/Minutes/Code/From). The password checks were removed.
+   - **zhinuwebapp/.../forms/GetMailboxProcessingHandler.java**: returns
+     - Outbox (without Code/From)
+     - Delivered (Cleotilde.delivered.json)
+     - Services (Active Kind=Door denes from Cleotilde pulse Internal:Network Rules)
+     - ServerTime
+   - **zhinuwebapp/src/main/webapp/templates/MailboxPanel.js**:
+     - Tabs; form state kept in `mailboxForm` across pulse redraws.
+     - GetMailbox polled every 5 s; mailboxRing POST.
+     - `mailboxLockHTML()` shows the lock from Delivered.Status. Password removed.
+   - Webapp wiring: RenderingEngine.js branch `PANEL_VISUALIZATION_STYLE_MAILBOX`, TeleonomeConstants.js `var PANEL_VISUALIZATION_STYLE_MAILBOX="Mailbox Panel";`, and an index.html script include.
+   - **zhinuwebapp/tools/add_mailbox_page.py**:
+     - Adds the "Mailbox" control-param dene (position 6, glyphicon-bell, pointer @Zhinu:Human Interface:Mailbox Page) and a "Mailbox Page" chain with a "Mailbox Panel" style.
+     - Uses OrderedDict, keeps a .before-mailbox backup, is idempotent.
+     - Must run with Hypothalamus and Medula stopped. A copy is at chilhuacle ~/zhinu-tools/.
+   - tools/set_doorbell_password.py: deleted locally and on chilhuacle (no DoorbellPassword file was ever created).
+   - **framework/.../cleotildemicrocontroller/DoorbellPoller.java** (new thread):
+     - Every pollSeconds: releaseIfAsked() (flag file "DoorbellReleaseLock", runs before the network), then pollOnce().
+       - pollOnce: connect; answerNewRings; if answered or the status changed → saveResults (DoorbellRings.json) and uploadResults (tmp + rename to Teleonome/Mailbox/Cleotilde.delivered.json).
+     - status() = Locked, WrongCodesLastHour, LastRelease, LastReleaseResult.
+     - Rings older than 3 min (or more than 1 min in the future) → "expired" without asking the board.
+     - `controller.askBoardToVerify` returning null → retry next poll.
+     - Max 3 board asks per poll; keeps 20 results; failures logged once per outage.
+   - **CleotildeMicroController.java**:
+     - Config params: Mailbox Host (104.154.239.253), User (pi), Key File (/home/pi/.ssh/dg), Directory (Teleonome/Mailbox/), Poll Seconds (10; 0 = off).
+     - Starts DoorbellPoller in init.
+     - `verifyUserCommandCode` → `Boolean.TRUE.equals(askBoardToVerify(code))`; `Boolean askBoardToVerify` returns null on no answer.
+     - Caches b[18]/b[19] in buildSensorLine (volatile codeFailuresLastHour, codeLockedOut), with getters.
+     - `String releaseCodeLock()` sends ResetCodeLockout; on "Failure-Unknown command" it falls back to Reboot.
+     - `doorbellAnswered(JSONObject)` writes OLED page 4.
+   - **teleonomewebapp** (Java 8; `mvn package` deploys, so don't build):
+     - ReleaseDoorbellLockProcessingHandler (POST, creates the flag file at Utils.getLocalDirectory()+DoorbellPoller.RELEASE_FLAG_FILE).
+     - GetDoorbellStatusProcessingHandler (DoorbellRings.json + ReleasePending).
+     - templates/DoorbellPanel.js (lock label, Release lock button, recent rings, 5 s refresh).
+     - RenderingEngine branch PANEL_VISUALIZATION_STYLE_DOORBELL; constant "Doorbell Panel"; index.html include.
+   - **OpenWrtOne/code/cleotilde_denome_v4_doorbell.py**: adds "Doorbell Panel" to the Cleotilde Home Page at position 10. Idempotent; tested on a copy.
+   - **Projects/Cleotilde/Cleotilde.ino**:
+     - FIRMWARE_VERSION "Cleotilde-8".
+     - New `ResetCodeLockout` command clears failureSec[] and answers Ok-ResetCodeLockout.
+     - Compiled OK with arduino-cli (40% flash). Not committed or flashed.
+   - **Projects/Cleotilde/CLAUDE.md**: command table row for ResetCodeLockout.
+   - **OpenWrtOne/documents/07-network-rules-design.md**:
+     - Q3–Q6 and Q19 answered; Q23 (HTTPS later) added.
+     - New "Built 2026-10-20" section covering: 10 s poll, no password, Release button, lock shown on both pages, the lockout pausing Cleotilde's own commands, and a pieces table.
+   - Memory:
+     - Added moquette-018-interceptor-release.md plus its MEMORY.md line.
+     - Updated cleotilde-firmware-version-numbering.md (code says Cleotilde-8, unreleased; release as v8).
+
+4. Errors and fixes:
+   - **Local Heart repro hung:** ZhinuPublisherListener needs Postgres, so I used a stub listener. The leak was then proven with -XX:MaxDirectMemorySize=24m.
+   - **Poller test, wrong classes:** the classpath had the old framework.jar first. Fixed by putting the fresh classes first.
+   - **Poller test, "4:" SftpException:** caused by the test interrupting the thread mid-download (chilhuacle SSH login takes ~6.5 s), not a code bug.
+   - **Python edit failed:** an anchor didn't match because the comment text started mid-line. Fixed the anchor and reran; nothing had been half-applied.
+   - **Ari changed direction on the password:** removed it per his instruction.
+
+5. Problem Solving:
+   - Stale External Data: diagnosed (Heart leak + no reconnect) and fixed in code, pending build.
+   - Doorbell end-to-end tested on chilhuacle with a fake board, in /tmp/mbtest (removed). Cases covered:
+     - valid, invalid, expired
+     - no-answer retry
+     - restart doesn't re-ask
+     - release flag → ResetCodeLockout
+     - status written only on change
+   - Zhinu is HTTP only with no login (accepted; HTTPS later).
+
+6. All user messages:
+   - The resume prompt (paste) with context, rules and next steps; "lets continue with the doorbell".
+   - "q4 yes, q19 your suggestion, q6 lets try cleotilde checking every 10 sec and see how we go"
+   - AskUserQuestion answers: "Doorbell password (Recommended)" and HTTPS "Later (Recommended)".
+   - "i am back, you can turn off the chat for now"
+   - "where are we?"
+   - "actually  i had  a thought, lets remove the password. if somebody tries 5 times and it locks the solution is simple, put a button in cleotilde that i can releas the lock. so therefore the possibilit y of not being in my network and have somebody try 5 times and me being locked out for 1 hr is not really that significant"
+   - "cletoilde is not exposed to the outside works"
+
+7. Pending Tasks:
+   - Report the completed password removal and release button to Ari, with the updated deploy steps.
+   - Ari builds framework, zhinuwebapp, zhinuheart, zhinuhypothalamus, teleonomewebapp, and heart (home).
+   - Firmware v8: Ari releases on GitHub and flashes via Paula.
+   - After the build, only if Ari asks:
+     - chilhuacle: stop Medula and the Hypothalamus; run `python3 ~/zhinu-tools/add_mailbox_page.py`; deploy the war, Heart and Hypothalamus; start Heart → Hypothalamus → Medula; check External Data turns fresh.
+     - Cleotilde: run cleotilde_denome_v4_doorbell.py (with the Hypothalamus stopped) and deploy the jar/war.
+     - Test ring from the phone.
+   - Later: Network Rules (a valid ring opens services), WireGuard (needs Q13/Q14), HTTPS.
+
+8. Current Work:
+   All code for "remove password + Release button on Cleotilde" is written and compiled standalone. The firmware compiles, the poller was tested against chilhuacle, and doc 07 and memory are updated. The last action was updating the memory file cleotilde-firmware-version-numbering.md. Nothing has been built, committed or deployed.
+
+9. Optional Next Step:
+   Give Ari the summary of the change he asked for ("lets remove the password ... put a button in cleotilde that i can releas the lock"):
+   - The password is removed from Zhinu.
+   - Cleotilde's Home page gets a Doorbell panel with a Release lock button (home network only, no code). It works within 10 s through a flag file → ResetCodeLockout (firmware 8; Reboot fallback on older firmware).
+   - Zhinu's Mailbox page shows "locked, release it at home".
+   - Note the side effect: a lockout also blocks Cleotilde's own coded commands, such as its pulse upload, until released.
+   - The updated build/deploy list includes teleonomewebapp, the firmware v8 flash, and the v4 denome script.
+   Then wait for Ari to build before doing any deploy steps.
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: /home/ari/.claude-profiles/digitalstables/projects/-home-ari-Data-DigitalStables-Projects-Cleotilde/a9b6aaea-c185-4f59-ab8a-d2e343cd8603.jsonl
+Continue the conversation from where it left off without asking the user any further questions. Resume directly — do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
+
+The messages after this summary are the most recent messages from before compaction, kept verbatim. The summary was written without seeing them, so something it says has not happened yet may already have happened in them.
+
+--- USER ---
+i copied the py file to a.py  and got : 
+
+<pasted_content id="47f2">
+ sudo python3 a.py
+Traceback (most recent call last):
+  File "/home/pi/a.py", line 46, in <module>
+    main(sys.argv[1], sys.argv[2])
+IndexError: list index out of range
+</pasted_content id="47f2">
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The script needs two names: the denome to read and the file to write the new one to. You ran it with neither, so it stopped before touching anything and your denome is unchanged.
+
+On the Cleotilde Pi, first stop the Hypothalamus the way you normally do. It rewrites `Teleonome.denome` on every pulse (the copy there is from 14:53), so a running Hypothalamus could overwrite the change. Then run:
+
+```bash
+cd /home/pi/Teleonome
+sudo cp Teleonome.denome Teleonome.denome.before-doorbell
+sudo python3 /home/pi/a.py Teleonome.denome.before-doorbell Teleonome.denome
+```
+
+- **First line:** moves into the folder that holds the denome.
+- **Second line:** keeps a backup copy.
+- **Third line:** reads the backup and writes the new denome with the Doorbell panel added.
+
+It should print: `added Doorbell Panel to the Home Page at position 10 -> Teleonome.denome`. Then start the Hypothalamus again.
+
+If something looks wrong, put the old one back with `sudo cp Teleonome.denome.before-doorbell Teleonome.denome`.
+
+The panel only appears once the new teleonomewebapp is deployed. Until then the page doesn't know what a "Doorbell Panel" is and won't show it.
+
+--- USER ---
+ok, idid everything, just restarted the chilhuacleinfo
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both machines are back up. I'm checking each piece now.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Found a few gaps. Now checking where Cleotilde's Hypothalamus jar was built.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Nearly done. Checking how Zhinu's web server normally starts.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Not everything has landed yet. The Zhinu fixes and both denome changes are in place, but the doorbell code itself didn't reach either machine.
+
+## Done correctly
+- **Zhinu Heart:** the memory-leak fix is in the running Heart.
+- **Zhinu Hypothalamus:** the auto-reconnect fix is in the running one, the same file you built.
+- **Zhinu denome:** has the Mailbox page.
+- **Cleotilde denome:** has the Doorbell panel.
+
+## Not there yet
+
+**1. Cleotilde's Hypothalamus is running the old framework.** You build on the Pi from a `git pull` in `/home/pi/Teleonome/build/`, so only committed files get there. In `framework` on your machine these are still not committed:
+- `DoorbellPoller.java` (new file, never added to git)
+- `CleotildeMicroController.java`
+- `DenomeManager.java` and `PostgresqlPersistenceManager.java` (yesterday's Zhinu fixes)
+
+So the Pi built the Hypothalamus without the doorbell loop: no checking of rings and no Release.
+
+**2. Cleotilde's web page wasn't rebuilt.** `ROOT.war` on the Pi is from Oct 18. My guess is the build failed: the Release button's code needs `DoorbellPoller`, which the Pi's framework doesn't have. Also, `templates/DoorbellPanel.js` in `teleonomewebapp` is a new file that isn't committed either, so the panel would be blank even after a build.
+
+**3. Zhinu's web page wasn't rebuilt.** The war on chilhuacle and the one on your machine are both from Oct 19 at 18:06. In `zhinuwebapp`, the Mailbox files are new and not committed (`Mailbox.java`, `RingDoorbellProcessingHandler.java`, `GetMailboxProcessingHandler.java`, `MailboxPanel.js`), and the changes to `RenderingEngine.js`, `TeleonomeConstants.js` and `index.html` aren't committed.
+
+**4. Zhinu's web server is off.** Tomcat didn't start again after you restarted chilhuacle. Nothing is listening on port 80, so the Zhinu website is down right now. Heart, Hypothalamus and PulseWatcher are all running.
+
+**5. Firmware number.** You released the firmware as **v10**, and it does include `ResetCodeLockout`. But the code still says `Cleotilde-8`, so the board would report itself as version 8. I set it to 8 because I thought the next release would be v8, but v8 already existed. Do you want me to change it to the next release number before you flash?
+
+## What to do
+1. Commit `framework` (including `DoorbellPoller.java`), `teleonomewebapp` (`DoorbellPanel.js`) and `zhinuwebapp` (the Mailbox files).
+2. On the Cleotilde Pi, pull and build `framework`, then `TeleonomeHypothalamus` and `teleonomewebapp`, and restart.
+3. Build `zhinuwebapp` and deploy it to chilhuacle.
+4. Start Zhinu's Tomcat. I can do this step if you want.
+
+Tell me when steps 1 to 3 are done and I'll check everything again.
+
+--- USER ---
+ok cleotilde firmware is updated, only thing you called it 8 but when i did the export compiled binary it landed as Cleotild 11 , not sure why github is jumping around like that, anyway, everything is updated
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The firmware is flashed, but the other pieces haven't changed since my last check. Your machine and both servers look exactly as they did 15 minutes ago.
+
+**Firmware number:** the name of the exported file comes from the release number, but the version the board reports is written in the code. So the binary is called Cleotilde 11, while the board's screen, web page and GetFirmware will say **Cleotilde-8**. Releases so far have been v8 and v10, and now 11, so the release number seems to move on its own. Next time I'll check the latest release before setting the number, and I can set the code to Cleotilde-11 now so the next flash matches.
+
+**Still not done:**
+
+1. **Not committed on your machine yet:**
+   - `framework`: `DoorbellPoller.java` (new), `CleotildeMicroController.java`, `DenomeManager.java`, `PostgresqlPersistenceManager.java`
+   - `teleonomewebapp`: `templates/DoorbellPanel.js` (new)
+   - `zhinuwebapp`: `Mailbox.java`, `RingDoorbellProcessingHandler.java`, `GetMailboxProcessingHandler.java`, `MailboxPanel.js` (all new), plus `RenderingEngine.js`, `TeleonomeConstants.js` and `index.html`
+
+   The Cleotilde Pi builds from git, so it can't get any of these until they're committed and pushed.
+
+2. **Cleotilde Pi:** the build folders are still on the old commits, the Hypothalamus has no doorbell loop, and the web page is still the Oct 18 version. Nothing has checked a ring yet; there's no ring file.
+
+3. **Zhinu (chilhuacle):** the web page is still the Oct 19 version with no Mailbox. **Tomcat is still off, so the Zhinu website is down.**
+
+Once the three repos are committed and pushed, you can rebuild the framework, the Hypothalamus and the web page on the Pi, and build `zhinuwebapp` for Zhinu. Do you want me to start Zhinu's Tomcat now, so the site is back up on the old page in the meantime?
+
+--- USER ---
+i am uploading a new versdion of the root.wa , is done restart zhinu, i am rebuilding cleotilde
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The new Zhinu war has arrived complete, with the Mailbox inside. Tomcat is still off, so I'm starting it now.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Zhinu is back up with the Mailbox. Your Cleotilde rebuild has produced new files, so I'm checking what's in them.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Zhinu is back up and has the Mailbox page. Cleotilde's new build has the doorbell code, but Cleotilde hasn't been restarted onto it yet.
+
+**Zhinu:**
+- Tomcat is running on your new web page, and the Mailbox answers.
+- No rings yet, and no services listed, because Cleotilde hasn't sent anything.
+- I didn't see Medula running at the moment I looked. That may simply be because it only runs now and then; I didn't check further.
+
+**Why Zhinu's website didn't come back after your restart:** Zhinu's start-up script, `StartWebserverBG.sh`, includes an option that Java 11 refuses. Java stops straight away with the error "Unrecognized VM option 'PrintGCTimeStamps'", and Tomcat never starts. Yesterday Tomcat was started by hand without that script, so nobody noticed. I started it the same way today.
+
+The script will fail again at the next reboot. The fix is to remove the three old Java 8 logging options from that one line. Do you want me to make that change on chilhuacle, keeping a backup of the old script?
+
+**Cleotilde:** the new Hypothalamus contains the doorbell loop, and the new web page contains the Doorbell panel and the Release button. The running Hypothalamus and Tomcat still date from 15:00/15:01, before these builds, so they need a restart.
+
+After the restart, a `DoorbellRings.json` file should appear within about 10 seconds. Then you can test from the phone:
+1. Ring with a good code.
+2. Ring with a wrong code a few times.
+3. Press Release on Cleotilde's Home page.
+
+Tell me when it has restarted and I'll check it.
+
+--- USER ---
+wait i am back, what do io do next
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Cleotilde is still running the old programs: Tomcat and the Hypothalamus both started at 15:00/15:01, before your new build. Zhinu is up and ready.
+
+**Next step: restart Cleotilde.** Reboot the Pi the same way you did before; that is the simplest way. The new Hypothalamus and web page are already in place, so a reboot starts them. Tell me when it's back up. I'll check that the doorbell loop started and that it can reach Zhinu, which takes about 10 seconds after start-up.
+
+**Then test from your phone,** on Zhinu's **Mailbox** page (bell icon):
+1. Leave the services empty, enter the 6-digit code from your authenticator app, and press **Ring**. Within about 10 seconds it should say **code valid**.
+2. Ring once with a wrong code such as 123456. It should say **code refused** and "1 of 5 wrong codes".
+3. Open Cleotilde's Home page at home. The **Doorbell** panel should list both rings, with a **Release lock** button.
+
+You don't need to lock it with 5 wrong codes to test the button. Pressing **Release lock** now just resets the wrong-code count back to 0, which shows it works.
+
+**Still open:** the fix to Zhinu's start-up script, so its website comes back after a chilhuacle reboot. Say yes and I'll do it.
+
+--- USER ---
+yes
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+My change on chilhuacle was blocked by a safety check, so here are the commands to run yourself. Log in to chilhuacle the usual way, then paste:
+
+```bash
+cd /home/pi/zhinuhypothalamus
+sudo cp -p StartWebserverBG.sh StartWebserverBG.sh.before-java11
+sudo sed -i 's|^export JAVA_OPTS=.*|export JAVA_OPTS=" -Xms12m -Xmx256m -Djava.library.path=/usr/lib/jni -XX:+HeapDumpOnOutOfMemoryError -Xlog:gc:/home/pi/Teleonome/logs/webgc.log"|' StartWebserverBG.sh
+grep JAVA_OPTS StartWebserverBG.sh
+```
+
+- **Line 1:** goes to Zhinu's folder.
+- **Line 2:** keeps a backup of the old script.
+- **Line 3:** replaces the one line of Java options. Each change is explained below.
+- **Line 4:** shows the new line so you can see it took.
+
+What the new line changes:
+- **The two Java 8 logging options are gone** (`PrintGCTimeStamps`, `PrintGCDetails`). These are what made Java 11 refuse to start.
+- **`-Xloggc:` becomes `-Xlog:gc:`**, the Java 11 way of writing the same memory log, to the same file.
+- **The memory limit goes from 40 MB to 256 MB.** The Tomcat running now has no limit at all and already uses about 170 MB, so 40 MB would probably crash it. chilhuacle has about 2.6 GB free, so 256 MB is safe.
+
+Tomcat is already running, so there's no need to restart anything now. The fixed script will be used at the next chilhuacle reboot. If it ever goes wrong, `sudo cp -p StartWebserverBG.sh.before-java11 StartWebserverBG.sh` puts the old script back.
+
+**Still waiting:** the reboot of the Cleotilde Pi, so it runs the new doorbell code. Tell me when it's done and I'll check it.
+
+--- USER ---
+done, cleotilde restarted the hypothalamus is running but no logs yet
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+With the newer log4j jars placed ahead of it, the Heart starts properly: it opens the database and its message broker comes up. That 30-second test has now ended. Fixing the `heart` `pom.xml` now.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Cleotilde's Heart is down, so nothing on Cleotilde runs yet, the doorbell included. I've fixed the cause in the `heart` `pom.xml`; it needs a rebuild on the Pi.
+
+**What happened:** the Heart is the message hub the Hypothalamus talks to. Since the 15:00 restart, the new Heart.jar (built at 14:27) crashes about 6 seconds after it starts. Its start script throws its error messages away, so nothing showed in the logs. I ran it by hand and got the error: two logging libraries in it don't match.
+- The framework now uses a newer database library, and that library uses commons-logging 1.3.5.
+- commons-logging 1.3.5 needs log4j 2.13 or newer.
+- `heart/pom.xml` listed log4j twice: version 2.17.0 and version 2.8.2 from 2017. The second one won, so the jar shipped with 2.8.2.
+
+Zhinu's Heart had exactly this problem yesterday.
+
+**The fix (`heart/pom.xml`):** I removed the 2.8.2 entry and set log4j to 2.26.1, the same version the framework uses. I tested it on the Pi by running the current Heart with the 2.26.1 jars put first. It started properly: it reached the database and the message broker came up. I stopped that test after 30 seconds, so the Heart is still down.
+
+**What you do:**
+1. Commit and push `heart`, then pull and build it on the Cleotilde Pi as usual.
+2. Reboot Cleotilde, or start the Heart and then restart the Hypothalamus.
+
+When it's done, tell me. I'll check that the Heart stays up, that the Hypothalamus connects, and that the doorbell loop writes `DoorbellRings.json`. Then you can test from the phone.
+
+--- USER ---
+done
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Everything is running, and Cleotilde is already talking to Zhinu through the mailbox.
+
+- **Heart:** up and listening; the new jar has log4j 2.26.1.
+- **Hypothalamus:** connected to the Heart (no "Failed to connect" since 16:04) and started all its parts.
+- **Doorbell loop:** running. It wrote `DoorbellRings.json` on Cleotilde and uploaded the same status to Zhinu, and Zhinu's Mailbox shows it. So the whole path works: Cleotilde fetches Zhinu's outbox, answers, and uploads the answer.
+
+The wrong-code count shows **-1** for now, which means "not read from the board yet". The board count is only read during a pulse, so after the first pulse it should change to **0**.
+
+**Test from your phone** on Zhinu's **Mailbox** page:
+1. Enter the code from your authenticator app with no services ticked, and press **Ring**. Within about 10 seconds it should say **code valid**.
+2. Ring once with 123456. It should say **code refused** and "1 of 5 wrong codes".
+3. At home, open the **Doorbell** panel on Cleotilde's Home page. It should list both rings. Press **Release lock**, and within about 10 seconds the count goes back to 0.
+
+Tell me how it goes and I'll check the logs on both machines if anything looks wrong.
+
+--- USER ---
+i forgot which key in the authenticator i need to use
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Use the same authenticator entry you already use for **Cleotilde's web page commands**. When the board got its code secret on Oct 19, it was copied from the Pi's `SecretKey`, so the entry you already had keeps working. I don't know what name your app shows for it, but you can find it by matching codes.
+
+Each code below is the one that entry should show from that time until the next one. Open your app and find the entry that matches:
+
+| From | Code |
+|---|---|
+| 16:09:30 | 837855 |
+| 16:10:00 | 677698 |
+| 16:10:30 | 426851 |
+| 16:11:00 | 912971 |
+| 16:11:30 | 129874 |
+| 16:12:00 | 883509 |
+| 16:12:30 | 005929 |
+| 16:13:00 | 593429 |
+| 16:13:30 | 292575 |
+| 16:14:00 | 244866 |
+| 16:14:30 | 712132 |
+| 16:15:00 | 209838 |
+| 16:15:30 | 125569 |
+| 16:16:00 | 210229 |
+| 16:16:30 | 587703 |
+| 16:17:00 | 202959 |
+| 16:17:30 | 322295 |
+
+Once you've found the entry, rename it in the app to something like **"Cleotilde doorbell"** so you don't have to hunt for it next time.
+
+If none of your entries matches, tell me. That would mean the secret isn't in your app any more, and I'll help you add it again.
+
+--- USER ---
+found it, ringing now BUT ITS BEEN more than 10 seconds
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The ring reached Zhinu at 16:10:42 with code 426851, which was the right code at that time. Cleotilde hasn't picked it up, so I'm checking its doorbell loop.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The doorbell loop is alive and polling every 10 seconds, but it isn't answering the ring. Its log lines aren't going to any file, so I'm reading its code against what's on the server.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Nothing on the Pi has the board's serial port open, even though the Hypothalamus should. I'm sending the board a quick `Ping` directly to see whether it answers at all.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+The board is answering again and the doorbell works now. Please **ring again** with a fresh code.
+
+Your first ring has been answered as **"too old, not checked"**. The board was hung, so Cleotilde couldn't ask it about the code. Once the board was back, the ring was already more than 3 minutes old, and the doorbell refuses old codes on purpose. The wrong-code count now reads **0**, which confirms the Pi and the board are talking again.
+
+It was the ESP32 itself that had stopped: the USB link was fine and the Pi had the port open. You said it has no watchdog, so it stayed stuck. While testing, I opened the port once with a quick script and that restarted the board, which is probably what brought it back. The doorbell loop then retried by itself.
+
+**For later:** if the board hangs again, the doorbell can't check codes. A watchdog in the firmware would make it restart itself. I can add one in the next firmware version if you want.
+
+--- USER ---
+rang again, check it
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Your new ring worked: the board said **code valid**.
+
+- You rang at 16:15:22 with code 209838.
+- Cleotilde picked it up from Zhinu about 4 seconds later and the board accepted the code.
+- The answer went back to Zhinu straight away, so your phone page should show **code valid**.
+- The wrong-code count is still 0. The first ring still shows as "too old, not checked".
+
+The whole doorbell path works: phone → Zhinu → Cleotilde → board → back to your phone.
+
+Next tests, if you want them now:
+1. Ring once with a wrong code such as 123456. It should say **code refused**, and the Mailbox page should show "1 of 5 wrong codes".
+2. At home, open Cleotilde's Home page. The **Doorbell** panel should list the rings. Press **Release lock**, and within about 10 seconds the count goes back to 0.
+
+--- USER ---
+move the doorbell to position 1, remove organism view dont need it, also add an expire time and time remaining. how can i test, i go outside turn off the wifi and connect how?
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Both pages show the open-until time and the time left; I tested them with sample rings. Now writing the script that rearranges Cleotilde's Home page.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm changing Cleotilde's Home page, not Zhinu's. The new script and the panel changes are ready.
+
+**On Cleotilde's Home page (new script):**
+- The Doorbell panel moves to position 1, at the top.
+- The Organism View panel is removed.
+- Cleotilde Status moves to position 2, into Organism View's old slot. Nothing else moves.
+
+I tested the script on a copy of the live denome; running it twice gives the same result. It is at `OpenWrtOne/code/cleotilde_denome_v5_doorbell_first.py`, and I copied it to the Pi as `/home/pi/v5.py`. Run it the same way as before, with Cleotilde's Hypothalamus stopped:
+
+```bash
+cd /home/pi/Teleonome
+sudo cp Teleonome.denome Teleonome.denome.before-v5
+sudo python3 /home/pi/v5.py Teleonome.denome.before-v5 Teleonome.denome
+```
+
+It should print: `Organism View Panel removed, Doorbell Panel at 1, Cleotilde Status Panel at 2 -> Teleonome.denome`. Then start the Hypothalamus again.
+
+**Open until / time left:** each code-valid ring now shows when it ends and how long is left, for example "6:48 pm" and "2 h 30 min left", then "ended". It updates every 5 seconds.
+- On Cleotilde, this is in `teleonomewebapp` (`DoorbellPanel.js`).
+- I also added it to Zhinu's Mailbox page (`zhinuwebapp`, `MailboxPanel.js`), because that is the page you'll look at from outside. If you only want it on Cleotilde, skip rebuilding `zhinuwebapp`.
+
+Both need a commit and a rebuild. Nothing actually opens on the network yet, because Network Rules aren't built. For now the time only shows how long a ring *would* keep things open.
+
+**How to test from outside:**
+1. On your phone, turn off Wi-Fi so it uses mobile data. You don't need to leave the house.
+2. Open **http://chilhuacle.info** in the browser and tap the bell (**Mailbox**) at the bottom.
+3. Ring with the code from the authenticator entry you just found. Within about 10 seconds it should say **code valid**.
+4. To see the wrong-code side, ring once with 123456. It should say **code refused**.
+5. Turn Wi-Fi back on and open Cleotilde's Home page. The Doorbell panel at the top shows the rings and the **Release lock** button.
+
+Cleotilde never needs to be reachable from outside. It fetches the rings from Zhinu itself, so the test works the same from anywhere.
+
+--- USER ---
+how do i reach continuity on 4g what is the address or what can ido ?
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Right now you can't reach Continuity from 4G. Nothing at home is open to the internet, on purpose. Only the doorbell works from outside, because Cleotilde fetches the rings from Zhinu. Design doc 07 already plans two ways to reach Continuity; neither is built yet.
+
+**1. The Mailbox Idea and Todo tabs on Zhinu (recommended first)**
+- You type an idea or todo on Zhinu's Mailbox page at http://chilhuacle.info. Cleotilde picks it up within about 10 seconds and puts it into Continuity at home.
+- It uses the same path as the doorbell, which we just proved works. No app, no tunnel, nothing new opened at home.
+- The limit: you can **add** ideas and todos, but you can't **browse** Continuity.
+- It's quick to build: the tabs are already on the page, and Cleotilde only has to pass the message on to Continuity on your home network.
+
+**2. The full Continuity page through WireGuard (the "door")**
+- You'd install the WireGuard app on your phone and switch it on. Then `http://192.168.1.138/continuity` opens from anywhere, exactly as at home. You ring the doorbell once a week to keep the door open.
+- WireGuard is a private, encrypted line between your phone and your home router. Doc 07 Appendix B explains it.
+- It's more work, and it's on chilhuacle, so I need your answers first:
+  - **Q13:** can the `arifainchtein` account on chilhuacle use `sudo`? And will you add two firewall rules in the Google Cloud console yourself, or should I give you the `gcloud` commands?
+  - **Q14:** do the addresses `10.98.0.x` and `10.99.0.x` clash with any network you use (the farm, another VPN)?
+  - **Q15:** which phone do you use, and is the official WireGuard app OK on it?
+
+I'd build option 1 now, so you can send ideas and todos from the paddock this week, and do option 2 after you answer Q13 to Q15. Which do you want?
+
+--- USER ---
+i see so right now is just the door bell, let me think about it
+
+--- CLAUDE ---
+Yes, right now it's just the doorbell. Take your time.
+
+These are waiting for you to build and deploy whenever it suits you:
+- **Cleotilde Home page:** run `/home/pi/v5.py` with the Hypothalamus stopped to put the Doorbell panel first and remove Organism View.
+- **`teleonomewebapp`** (`DoorbellPanel.js`): open-until time and time left on Cleotilde.
+- **`zhinuwebapp`** (`MailboxPanel.js`): the same on Zhinu's Mailbox page, if you want it there too.
+- **`heart`** (`pom.xml`): commit the log4j fix you built on the Pi, so the next build from git doesn't bring the crash back.
+- **chilhuacle:** the three-line edit to `StartWebserverBG.sh`, so Zhinu's website comes back after a reboot.
+
+When you're ready, tell me whether you want option 1, option 2 or both, and answer Q13 to Q15 if it's option 2.
+
+--- USER ---
+i am on my phone, wifi off and i dont see the footer buttons and i have cleared the website data on the phone
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Zhinu's page loads, but the footer row stays empty. The footer is only built after the page receives Zhinu's data, so I'm checking what the page asked for and what came back.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I'm loading Zhinu in a test browser to see why a fresh phone gets no footer.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Cleotilde's pulse uploads to Zhinu stopped at 16:20. Checking whether Cleotilde's Hypothalamus is still running; you may have stopped it to run the v5 script.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I found and fixed three things. One you can fix right now; two need a `zhinuwebapp` rebuild.
+
+**1. Cleotilde's Hypothalamus is stopped (you can fix this now).** You stopped it at 16:21 to run v5, which worked, but it was never started again. So Cleotilde has sent no pulses to Zhinu for half an hour and won't answer the doorbell. Please start it again. Once its first pulse reaches Zhinu, the **Cleotilde** button comes back on the first page.
+
+**2. The Zhinu button is missing (needs a rebuild).** When you installed the new Zhinu web page, Tomcat emptied its web folder, and the first page's buttons come from the teleonome folders inside it:
+- Ra, Tlaloc and ChinampaMonitor got their folders back with their next pulse.
+- Zhinu never sends itself a pulse, so its folder never came back.
+- Your computer still shows the footer only because its page was loaded before the redeploy. Reload it and the footer will disappear there too.
+
+I changed `LatestPulseReader.java` so Zhinu always comes **first** in the button list, read from its own pulse. A redeploy can't lose it again. It compiles.
+
+**3. ChinampaMonitor overlaps Tlaloc on the phone (needs a rebuild).** In `index.html`, names longer than 9 letters now take a whole row on a phone; on a computer nothing changes.
+
+**What to do:**
+1. Start Cleotilde's Hypothalamus.
+2. Rebuild `zhinuwebapp` and deploy it to chilhuacle. That build also includes the open-until and time-left columns from before.
+
+**Something to check:** a file in `~/Data/Teleonome` has a GitHub token in its **name** (`Zhinu_git_token ghp_…`). Anyone who sees that folder listing sees the token, and so does anything that backs up or syncs file names. I'd revoke that token on GitHub, make a new one, and keep it inside a file rather than in the name.
+
+--- USER ---
+cl;eatilde is back up
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Everything is working again. In a phone-sized test browser, tapping **Zhinu** brings up the footer: **Home, Status, Diag, Pathos, Presence, Mailbox**.
+
+- **Cleotilde:** running again and sending pulses to Zhinu (the first at 16:56), so its button is back. Its doorbell loop is running too, and the wrong-code count is 0.
+- **Zhinu's first page:** buttons are Zhinu (first), ChinampaMonitor, Cleotilde, Ra, Tlaloc. ChinampaMonitor gets its own row on a phone. I didn't measure the button positions in the test, but the deployed page has the change.
+
+On your phone, pull down to reload the page, tap **Zhinu**, then **Mailbox** in the footer. Your earlier rings are there, and a valid ring now shows its open-until time and time left.
+
+--- USER ---
+its working more or less, send a summary to continuity including the big decision about full access and pros and cons and needed steps
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Continuity answers on the home network and takes ideas as a title plus a plain-text note. I'm writing the summary and sending it as one idea.
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+I sent the summary to Continuity as idea **#10**, "Cleotilde doorbell works; decision on full access to home from outside". I read it back and all of it is there.
+
+What it contains:
+1. **Today's status.** How the doorbell works from 4G, how to release the lock, which authenticator entry to use, and what was fixed today.
+2. **Still open.**
+   - The `StartWebserverBG.sh` fix on chilhuacle.
+   - Commits for `framework`, `heart`, `teleonomewebapp` and `zhinuwebapp`.
+   - A watchdog for the ESP32.
+   - The GitHub token in a file name.
+3. **The big decision,** with pros, cons and the steps for each option:
+   - **Option 1, Mailbox tabs through Zhinu:** nothing at home is opened and it's quick to build, but you can only add ideas and todos, not browse. Documents would sit in the cloud for up to an hour, and Zhinu is still HTTP.
+   - **Option 2, full access through WireGuard:** all of Continuity from anywhere, encrypted, with no copies in the cloud. But it's a real way into the house: losing the phone means removing its key at home, and it needs setup on chilhuacle and the router. Your answers to Q13, Q14, Q15 and Q18 are needed first.
+   - **My suggestion:** build Option 1 first, and decide on Option 2 after those answers. The two don't rule each other out.
+
+--- USER ---
+i think all the  frmework her teleonomeweba and zhinuwebapp are done
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+
+
+--- CLAUDE ---
+Yes, Cleotilde is running the latest of everything:
+
+| Piece | Running on Cleotilde | Latest commit |
+|---|---|---|
+| framework (doorbell loop) | `3949768` "doorbell", inside the Hypothalamus jar built at 15:22 | same |
+| heart (log4j fix) | `63500ba`, Heart.jar built at 16:02, running since 16:03 | same |
+| teleonomewebapp (Doorbell panel with open-until and time left) | `5c8b469`, ROOT.war from 16:23, already live (Tomcat reloads a new war by itself) | same |
+| Hypothalamus | jar built 15:22 with the new framework, running since 16:55 | same |
+
+On your machine, `framework`, `heart` and `teleonomewebapp` are committed, but **`zhinuwebapp` isn't**. The page running on Zhinu was built from your working copy, so it works, but git doesn't have it yet. Not committed:
+- the Mailbox files: `Mailbox.java`, `RingDoorbellProcessingHandler.java`, `GetMailboxProcessingHandler.java`, `MailboxPanel.js`
+- `LatestPulseReader.java`, which keeps the Zhinu button
+- the `index.html` change for the phone layout
+- 13 modified files from yesterday
+
+`zhinuheart` (the Heart memory-leak fix) isn't committed either.
+
+**Two security points:**
+1. `zhinuwebapp`'s git remote has a GitHub token written into its URL. It's a different token from the one in the file name, and it shows to anyone who runs `git remote -v`. I'd revoke both tokens on GitHub and use a credential helper or SSH instead.
+2. `framework` has an untracked file called `SecretKey` (plus a `Teleonome.denome`). Make sure they never get committed: if that `SecretKey` is a TOTP secret like Cleotilde's, anyone who has it can make doorbell codes. Adding them to `.gitignore` would prevent accidents.
+
+--- USER ---
+This session is being continued from a previous conversation that ran out of context. The summary below covers the earlier portion of the conversation.
+
+Summary:
+1. Primary Request and Intent:
+   - The work continues the Zhinu (cloud, chilhuacle.info) + Cleotilde (home Pi + ESP32 board) doorbell.
+   - Rules, verbatim where possible:
+     - "Never build, commit, push or deploy Teleonome projects; Ari does it (verify with standalone javac in the scratchpad only)."
+     - "Ask before changing chilhuacle beyond what is listed."
+     - "Keep all remembereddenewords tables (Ra/Tlaloc history)."
+     - "Talk in the terminal only."
+     - "Ari is new to networking: explain simply."
+     - Global CLAUDE.md: never run mvn builds, git commit, or git push in Teleonome repos unless Ari explicitly asks in that exact turn; hand off when ready.
+   - Requests this session:
+     - Fix the a.py run.
+     - Check that everything was deployed, then restart Zhinu after the war upload.
+     - Fix the Cleotilde Heart.
+     - Tell Ari which authenticator key to use.
+     - Check the rings.
+     - "move the doorbell to position 1, remove organism view dont need it, also add an expire time and time remaining", then clarified "i meant in Cleotilde not zhinu".
+     - How to test from 4G, and how to reach Continuity on 4G. Ari said "let me think about it" on the full-access options.
+     - Fix the phone not showing the Zhinu button/footer, and ChinampaMonitor overlapping Tlaloc ("needs its own row").
+     - "send a summary to continuity including the big decision about full access and pros and cons and needed steps".
+     - Latest: "i think all the frmework her teleonomeweba and zhinuwebapp are done" and "can you check if cleotilde is running hte latest".
+
+2. Key Technical Concepts:
+   - **Zhinu (chilhuacle):**
+     - ssh `arifainchtein@chilhuacle.info -i ~/.ssh/dg_rutasegura`; Java 11 at /opt/temurin-11-jre; server clock is UTC (Ari is AEDT, +11).
+     - Tomcat at /home/pi/zhinuhypothalamus/tomcat, port 80. Heart MQTT on 1883, websocket on 9876.
+     - rc.local starts Heart → StartWebserverBG.sh → Hypothalamus → PulseWatcher.
+     - StartWebserverBG.sh has a JAVA_OPTS line with `-XX:+PrintGCTimeStamps -Xloggc:... -XX:+PrintGCDetails`, so Java 11 refuses to start and Tomcat never comes up after a reboot.
+     - Tomcat was started manually with `sudo sh tomcat/bin/startup.sh`.
+   - **ZhinuPulseWatcher:** on "complete", copies /home/pi/Teleonome/<name>/Teleonome.denome to tomcat/webapps/ROOT/<name>/. A war redeploy empties ROOT; Zhinu never pulses itself, so its folder never came back.
+   - **Cleotilde Pi:**
+     - ssh Cleotilde. Ari builds on the Pi from git pulls in /home/pi/Teleonome/build/<repo>, so only committed and pushed code reaches it.
+     - Logs are in /home/pi/Teleonome/logs (root-only, use sudo).
+     - Heart.txt is in heart/logs; StartHeartBG.sh sends output to /dev/null.
+   - **Heart crash:** a NoSuchMethodError `LoggerContextFactory.isClassLoaderDependent()`. commons-logging 1.3.5 (via commons-dbcp2 2.14) needs log4j-api 2.13+, and the heart pom had a duplicate log4j-core 2.8.2.
+   - **DoorbellPoller:** log4j 1.x logger lines are not visible in any log file. Use `sudo jstack <pid>` to see thread state.
+   - **Board:**
+     - USB CP2104 at /dev/serial/by-id/usb-Silicon_Labs_CP2104_USB_to_UART_Bridge_Controller_02EC7EA0-if00-port0 (→ ttyUSB0); TtySerialPort uses stty + FileInputStream.
+     - The ESP32 can hang (no watchdog); then GetSensorData fails and WrongCodesLastHour stays -1.
+     - Opening the port with pyserial resets the board.
+   - **TOTP:** the board secret is the Pi's /home/pi/Teleonome/SecretKey; it's the authenticator entry Ari uses for Cleotilde web commands.
+   - **Continuity:** at http://192.168.1.138/continuity on the LAN.
+     - `POST /continuity/ideas/create` with title + note returns {"id":N}; `GET /ideas/list`.
+     - Source is at /home/ari/Data/DigitalStables/FactorySystem/continuity.
+
+3. Files and Code Sections:
+   - **/home/ari/Data/Teleonome/heart/pom.xml:**
+     - Replaced the log4j-core 2.17.0 block with log4j-api 2.26.1 + log4j-core 2.26.1, with the comment: "2.26.1 like the framework: commons-logging 1.3 (from commons-dbcp2 2.14) needs log4j-api 2.13+, with 2.8.2 the Heart died at PostgresqlPersistenceManager.init (NoSuchMethodError, 2026-10-20)".
+     - Removed the duplicate log4j-core 2.8.2 block.
+     - Ari committed this (63500ba) and built it. Running Heart.jar 16:02 has 2.26.1.
+   - **/home/ari/Data/Teleonome/zhinuwebapp/src/main/java/com/teleonome/zhinuwebapp/servlet/LatestPulseReader.java:**
+     - getTeleonomeNames now gathers names from the DB, else from ROOT folders (sorted), then puts Zhinu's own name first. Javadoc: "Zhinu itself comes first: its pulse is in the working directory, not in a ROOT folder, so a redeploy of the war (which empties ROOT) no longer loses its button and footer (2026-10-20)."
+     - New helper:
+       ```java
+       private static String ownName() {
+           File file = new File(Utils.getLocalDirectory() + "Teleonome.denome");
+           try {
+               if (file.isFile()) return new JSONObject(FileUtils.readFileToString(file, "UTF-8")).getJSONObject("Denome").getString("Name");
+           } catch (IOException | JSONException e) {
+               logger.warn("Could not read own name from " + file + ": " + e.getMessage());
+           }
+           return null;
+       }
+       ```
+     - Compiled standalone in the scratchpad. Deployed by Ari: GetInitialData now returns ["Zhinu","ChinampaMonitor","Cleotilde","Ra","Tlaloc"].
+   - **zhinuwebapp/src/main/webapp/index.html** (~line 682): the button div class uses `(n.length > 9 ? "col-xs-12" : "col-xs-6")`, with the comment "a long name (ChinampaMonitor) doesn't fit half a phone screen: its own row there". Deployed.
+   - **zhinuwebapp/src/main/webapp/templates/MailboxPanel.js:**
+     - Added `mailboxExpiry(result)`: Received + Minutes*60000 for valid results, else null.
+     - Added `mailboxRemaining(expiry)`: "X h Y min left" / "ended".
+     - The ring status says "Open until … (… left)"; the history table gained "Open until" and "Left" columns.
+   - **teleonomewebapp/src/main/webapp/templates/DoorbellPanel.js:**
+     - Same columns, plus `doorbellRemaining(expiry)`.
+     - Committed (5c8b469) and deployed on Cleotilde; the war and exploded ROOT contain doorbellRemaining.
+   - **/home/ari/Data/OpenWrtOne/code/cleotilde_denome_v5_doorbell_first.py** (new; copied to Pi /home/pi/v5.py):
+     - Removes "Organism View Panel" from the Home Page and sets Doorbell Panel to 1 and Cleotilde Status Panel to 2.
+     - Checks for duplicate positions. Usage: `<in.denome> <out.denome>`.
+     - Tested as idempotent on a copy. Ari ran it at 16:21 (backup Teleonome.denome.before-v5).
+   - Memory file **cleotilde-firmware-version-numbering.md**, rewritten:
+     - Releases skip numbers (v1, 3, 4, 6, 8, 10; the export showed 11). The code says "Cleotilde-8".
+     - Rule: check git log and ask Ari for the next number; never use 0.x.
+     - The MEMORY.md index line was updated.
+   - Continuity idea #10, "Cleotilde doorbell works; decision on full access to home from outside" (4391 chars). Source note: scratchpad/continuity_note.txt. It covers the status, still-open items, Option 1 vs Option 2 with pros, cons and steps, and the suggestion.
+   - Scratchpad tools: cdp.mjs / cdp2.mjs (headless Chrome via CDP; run with `node --experimental-websocket`).
+
+4. Errors and fixes:
+   - a.py IndexError: the script needs `<in> <out>` arguments. I gave Ari commands with a backup.
+   - Zhinu's Tomcat didn't start at boot: Java 11 rejects PrintGCTimeStamps. I started it with tomcat/bin/startup.sh.
+     - My sed edit of StartWebserverBG.sh was blocked by the auto-mode classifier ("Remote Shell Writes"), so I gave Ari the commands:
+       ```
+       cd /home/pi/zhinuhypothalamus
+       sudo cp -p StartWebserverBG.sh StartWebserverBG.sh.before-java11
+       sudo sed -i 's|^export JAVA_OPTS=.*|export JAVA_OPTS=" -Xms12m -Xmx256m -Djava.library.path=/usr/lib/jni -XX:+HeapDumpOnOutOfMemoryError -Xlog:gc:/home/pi/Teleonome/logs/webgc.log"|' StartWebserverBG.sh
+       ```
+     - Ari's status on that edit is unknown.
+   - My own `pkill -f` patterns killed my own ssh/bash commands, because their command lines contained the pattern. Avoid pkill -f with patterns that appear in the command itself.
+   - The Cleotilde Heart crash (log4j). Fixed through the pom.
+   - The first ring expired because the ESP32 was hung. The board was reset (my pyserial open plus Ari's reset), and the second ring was valid.
+   - The phone footer was missing: ROOT/Zhinu was lost on redeploy, plus the Hypothalamus was left stopped after v5. Fixed in code; Ari restarted the Hypothalamus.
+
+5. Problem Solving:
+   - The end-to-end doorbell works: phone → Zhinu → Cleotilde → board → back, about 4 s.
+   - The Zhinu footer with Mailbox works in a phone-emulated test.
+   - Open security items to mention to Ari:
+     - A file in ~/Data/Teleonome has a GitHub token in its name ("Zhinu_git_token ghp_…").
+     - The zhinuwebapp git remote URL embeds a GitHub token (`https://ghp_…@github.com/arifainchtein/zhinuwebapp.git`).
+     - The framework repo has untracked `SecretKey` and `Teleonome.denome` files, which must never be committed.
+     - Never repeat the token values.
+
+6. All user messages:
+   - "i copied the py file to a.py and got : [IndexError traceback]"
+   - "ok, idid everything, just restarted the chilhuacleinfo"
+   - "cleotilde all i am missng is uploading the new firmwar"
+   - "just restarted cleotilde to make sure all the software starts with the new code, check that i did everything"
+   - "ok cleotilde firmware is updated, only thing you called it 8 but when i did the export compiled binary it landed as Cleotild 11 , not sure why github is jumping around like that, anyway, everything is updated"
+   - "i am uploading a new versdion of the root.wa , is done restart zhinu, i am rebuilding cleotilde"
+   - "i just restarted the medula so it will run in 30 seconds"
+   - "wait i am back, what do io do next"
+   - "yes" (to fixing StartWebserverBG.sh)
+   - "done, cleotilde restarted the hypothalamus is running but no logs yet"
+   - "done" (after the heart rebuild)
+   - "i forgot which key in the authenticator i need to use"
+   - "the cleortiolde esp32 needs a reset, it does not have a watchdog, just ddi it"
+   - "found it, ringing now BUT ITS BEEN more than 10 seconds"
+   - "rang again, check it"
+   - "move the doorbell to position 1, remove organism view dont need it, also add an expire time and time remaining. how can i test, i go outside turn off the wifi and connect how?"
+   - "wait i meant in Cleotilde not zhinu"
+   - "how do i reach continuity on 4g what is the address or what can ido ?"
+   - "i see so right now is just the door bell, let me think about it"
+   - "i am on my phone, wifi off and i dont see the footer buttons and i have cleared the website data on the phone"
+   - "actually somehting is broken i dot see the footer button on the ocmputer either"
+   - "sorry i do see the footer in my comupter just the pghon"
+   - "on the phone i dont see the zhinu button there fore i dont see the ooter butons"
+   - "also on the phone chinampamonitor and tlaloc are on top of each other, chinampamonitor is too long needs its own row"
+   - "cl;eatilde is back up"
+   - "its working more or less, send a summary to continuity including the big decision about full access and pros and cons and needed steps"
+   - "i think all the frmework her teleonomeweba and zhinuwebapp are done"
+   - "can you check if cleotilde is running hte latest"
+
+7. Pending Tasks:
+   - Answer Ari: Cleotilde is running the latest code.
+     - The Pi build trees match the local commits: framework 3949768, heart 63500ba, teleonomewebapp 5c8b469, TeleonomeHypothalamus b5ccaf2.
+     - Running jars and war:
+       - TeleonomeHypothalamus.jar 15:22 has DoorbellPoller; the Hypothalamus started 16:55.
+       - Heart.jar 16:02 has log4j 2.26.1; the Heart started 16:03.
+       - ROOT.war 16:23 and the exploded ROOT DoorbellPanel.js contain doorbellRemaining, so Tomcat has redeployed the war.
+     - Board firmware has ResetCodeLockout (it reports Cleotilde-8).
+   - Tell Ari that zhinuwebapp is NOT committed. These are only local, though deployed from his build:
+     - Modified: pom.xml, several handlers, WebAppContextListener, RenderingEngine.js, TeleonomeConstants.js, D3Chart.js, CSVMultiLineChart.js, web.xml, index.html.
+     - Untracked: Mailbox.java, RingDoorbellProcessingHandler.java, GetMailboxProcessingHandler.java, LatestPulseReader.java, MailboxPanel.js, tools/.
+   - zhinuheart is also uncommitted (pom.xml, ZhinuHeart.java, ZhinuPublisherListener.java). heart has only a BUILD_NUMBER change in Heart.java.
+   - Warn: don't commit framework's untracked SecretKey/Teleonome.denome. The zhinuwebapp remote URL embeds a GitHub token; revoke it, along with the token in the file name.
+   - Possibly still open: confirm Ari applied the StartWebserverBG.sh fix on chilhuacle.
+   - Later, awaiting Ari's decision:
+     - Option 1: Mailbox Idea/Todo tabs.
+     - Option 2: WireGuard (needs Q13, Q14, Q15, Q18).
+     - HTTPS for Zhinu.
+     - ESP32 watchdog in the next firmware, with the version number to be set to the actual release.
+
+8. Current Work:
+   I was answering "can you check if cleotilde is running hte latest", after verifying Ari's "i think all the frmework her teleonomeweba and zhinuwebapp are done". The last checks showed:
+   - The Pi build trees equal the local HEADs.
+   - Heart.jar, TeleonomeHypothalamus.jar and ROOT.war on the Pi contain the latest code.
+   - All Java processes started after their files were built (Heart 16:03:50, Tomcat 16:03:55 with the war redeployed at 16:23, Cerebellum/Medula 16:55, Hypothalamus 16:55:25).
+   - Separately, git status showed zhinuwebapp and zhinuheart still uncommitted.
+
+9. Optional Next Step:
+   Reply to Ari, in text only, answering "can you check if cleotilde is running hte latest":
+   - Yes: Cleotilde runs the latest framework, Heart, Hypothalamus and web page.
+   - framework, heart and teleonomewebapp are committed. But zhinuwebapp (and zhinuheart) are not committed: list the files, and point out that Zhinu runs a build from his machine's uncommitted tree.
+   - Warn not to commit SecretKey/Teleonome.denome in framework.
+   - The zhinuwebapp remote URL contains a GitHub token; recommend revoking it without repeating the value.
+   - Do not commit or build anything myself.
+
+If you need specific details from before compaction (like exact code snippets, error messages, or content you generated), read the full transcript at: /home/ari/.claude-profiles/digitalstables/projects/-home-ari-Data-DigitalStables-Projects-Cleotilde/a9b6aaea-c185-4f59-ab8a-d2e343cd8603.jsonl
+Continue the conversation from where it left off without asking the user any further questions. Resume directly — do not acknowledge the summary, do not recap what was happening, do not preface with "I'll continue" or similar. Pick up the last task as if the break never happened.
+
+The messages after this summary are the most recent messages from before compaction, kept verbatim. The summary was written without seeing them, so something it says has not happened yet may already have happened in them.

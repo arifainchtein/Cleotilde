@@ -70,14 +70,15 @@ const uint32_t FIRMWARE_BUILD = VitalSignsTracker::buildStamp(__DATE__, __TIME__
 #define RELAY_HARDWARE_PRESENT false
 
 // VerifyUserCode (doorbell). A ring takes 1-2 min to reach the board (Zhinu -> SFTP -> Pi), longer than one
-// 30 s TOTP step, so a code from any step in the last 3 min is accepted (one step ahead too, for clock skew).
+// 30 s TOTP step, and a command typed on Cleotilde's page waits for the Hypothalamus's next cycle, so a code
+// from any step in the last 15 min is accepted (Ari, 2026-11-04; it was 3 min), one step ahead too, for clock skew.
 // Each earlier step is accepted once. The current step can be used again: the Hypothalamus asks this board
 // for a code (GetCommandCode) for each of its own CommandRequests and verifies it a moment later, often
 // several in the same step. 5 wrong codes in an hour lock verification for an hour.
 #define TOTP_STEP_SEC 30
-#define VERIFY_STEPS_BACK 6  // 6 earlier steps + the current one = the last 3 minutes
+#define VERIFY_STEPS_BACK 30  // 30 earlier steps + the current one = the last 15 minutes
 #define VERIFY_STEPS_AHEAD 1
-#define VERIFY_USED_STEPS 8
+#define VERIFY_USED_STEPS 32  // more than VERIFY_STEPS_BACK + AHEAD, so no step in the window can be used twice
 #define VERIFY_MAX_FAILURES 5
 #define VERIFY_LOCKOUT_SEC 3600UL
 #define VERIFY_REPEAT_SEC 15UL  // the Pi resends after a garbled answer, so a just-accepted code answers valid again
