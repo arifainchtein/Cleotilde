@@ -68,7 +68,8 @@ Switch **left**: the Pi's pages (up to 6, rotating every 5 s). Switch **right**:
 | `Start …` / `End …` (life cycle events) | `Ok-<event>` |
 | `GetTime`, `SetTime#d#m#yy#dow#hh#mm#ss`, `SetTimeFromInternet` | as Annabelle |
 | `GetCommandCode`, `GetSecret`, `SetSecret#base32#digits#period` | TOTP, as Annabelle |
-| `VerifyUserCode#123456` | `Ok-Valid Code` / `Failure-Invalid Code`. Doorbell and commands: any 30 s step in the last 15 min (+1 ahead; 3 min until 2026-11-04), earlier steps once each, the current step reusable (the Hypothalamus verifies its own codes); 5 wrong in an hour = locked for an hour |
+| `VerifyUserCode#123456` | `Ok-Valid Code` / `Failure-Invalid Code`. Commands from Cleotilde's page: any 30 s step in the last 15 min (+1 ahead), **reusable** within the window, so the page remembers one code for 15 min (firmware 14+; before: once each, 3 min until v12). 5 wrong in an hour = locked for an hour |
+| `VerifyRingCode#123456` | The doorbell (firmware 14+): same window, but each earlier step accepted **once** (Zhinu is untrusted, no replays); the current step reusable. Shares the lockout |
 | `ResetCodeLockout` | `Ok-ResetCodeLockout`: forgets the wrong codes (the lock's release; Cleotilde's page, home network only). Firmware 8+ |
 | `ConfigWifiSTA#ssid#pass#host`, `ConfigWifiAP#ssid#pass#host`, `GetIpAddress`, `RestartWifi`, `ScanNetworks` | |
 | `SetProductDefinition#name#power#battery#pcbs#firmware`, `GetProductDefinition` | as Daffodil (PaulaDeployer updates the firmware label after a deploy) |

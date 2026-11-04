@@ -24,7 +24,7 @@
 #include <ArduinoJson.h>
 #include <esp_system.h>
 
-#define FIRMWARE_VERSION "Cleotilde-8"
+#define FIRMWARE_VERSION "Cleotilde-14"
 #define DEVICE_TYPE_ID "Cleotilde"
 #define DEFAULT_SSID "MainRouter24"  // open network, no password
 #define DEFAULT_HOSTNAME "CleotildeESP32"  // the Pi is Cleotilde.local, so the ESP32 must not use that name
@@ -72,9 +72,13 @@ const uint32_t FIRMWARE_BUILD = VitalSignsTracker::buildStamp(__DATE__, __TIME__
 // VerifyUserCode (doorbell). A ring takes 1-2 min to reach the board (Zhinu -> SFTP -> Pi), longer than one
 // 30 s TOTP step, and a command typed on Cleotilde's page waits for the Hypothalamus's next cycle, so a code
 // from any step in the last 15 min is accepted (Ari, 2026-11-04; it was 3 min), one step ahead too, for clock skew.
-// Each earlier step is accepted once. The current step can be used again: the Hypothalamus asks this board
-// for a code (GetCommandCode) for each of its own CommandRequests and verifies it a moment later, often
-// several in the same step. 5 wrong codes in an hour lock verification for an hour.
+// Two commands (2026-11-04):
+//   VerifyRingCode#code  the doorbell: each earlier step is accepted once, so a ring Zhinu (untrusted) saw can't be
+//                        replayed. The current step can be used again.
+//   VerifyUserCode#code  commands from Cleotilde's page (and the Hypothalamus's own CommandRequests): any step in the
+//                        window, as often as needed, so the page can remember one code for 15 minutes instead of
+//                        asking for every button. Only the home network reaches the page.
+// 5 wrong codes in an hour (either command) lock verification for an hour.
 #define TOTP_STEP_SEC 30
 #define VERIFY_STEPS_BACK 30  // 30 earlier steps + the current one = the last 15 minutes
 #define VERIFY_STEPS_AHEAD 1
@@ -590,16 +594,17 @@ bool stepUsed(long step) {
   return false;
 }
 
-bool verifyUserCode(long userCode) {
+// onceOnly: the doorbell's rule (each earlier step once); false: any step in the window, any number of times.
+bool verifyUserCode(long userCode, bool onceOnly) {
   unsigned long nowSec = millis() / 1000;
   if (userCode == lastAcceptedCode && nowSec - lastAcceptedSec < VERIFY_REPEAT_SEC) return true;
   if (codeLockedOut()) return false;
   long currentStep = (long)rtcUtcEpoch() / TOTP_STEP_SEC;
   for (long step = currentStep - VERIFY_STEPS_BACK; step <= currentStep + VERIFY_STEPS_AHEAD; step++) {
     bool current = step == currentStep;
-    if (!current && stepUsed(step)) continue;
+    if (onceOnly && !current && stepUsed(step)) continue;
     if (secretManager.generateCodeAt(step * TOTP_STEP_SEC) == userCode) {
-      if (!current) {
+      if (onceOnly && !current) {
         usedSteps[usedStepPos] = step;
         usedStepPos = (usedStepPos + 1) % VERIFY_USED_STEPS;
       }
@@ -743,10 +748,11 @@ void handleSerialCommand(String command) {
       snprintf(buf, sizeof(buf), "%06ld", code);  // the TOTP library drops leading zeros
       Serial.println(buf);
     }
-  } else if (command.startsWith("VerifyUserCode")) {
-    // VerifyUserCode#123456 -> the exact strings the framework expects (COMMAND_REQUEST_VALID_CODE / INVALID_CODE)
+  } else if (command.startsWith("VerifyUserCode") || command.startsWith("VerifyRingCode")) {
+    // VerifyUserCode#123456 / VerifyRingCode#123456 -> the exact strings the framework expects
+    // (COMMAND_REQUEST_VALID_CODE / INVALID_CODE); the ring is once-only, see VERIFY_STEPS_BACK
     String codeInString = getValue(command, '#', 1);
-    bool valid = codeInString.length() > 0 && verifyUserCode(codeInString.toInt());
+    bool valid = codeInString.length() > 0 && verifyUserCode(codeInString.toInt(), command.startsWith("VerifyRingCode"));
     Serial.println(valid ? F("Ok-Valid Code") : F("Failure-Invalid Code"));
   } else if (command.startsWith("ResetCodeLockout")) {
     // the doorbell lock's release, sent by the Pi when Ari presses Release on Cleotilde's page (home network only):
